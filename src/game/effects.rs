@@ -13,15 +13,7 @@ use crate::game::enums::{CardType, Rarity};
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum Effect {
-    Taunt,
-    Charge,
-    Rush,
-    Stealth,
-    DivineShield,
-    Lifesteal,
-    Reborn,
-    Poisonous,
-    Windfury,
+
     Spellpower { amount: Option<i32> },
 
     Damage {
@@ -158,7 +150,11 @@ pub struct EffectCondition {
 
 impl Effect {
     pub fn from_template(template: &EffectTemplate) -> Self {
-        match template.effect_type.to_ascii_lowercase().as_str() {
+        match template.effect_type.to_ascii_lowercase().as_str() {           
+            "taunt" | "charge" | "rush" | "divine_shield" | "lifesteal"
+            | "poisonous" | "reborn" | "stealth" | "windfury" | "megawindfury" => {
+                return Effect::Unknown
+            }
             "add_card_to_hand" => Effect::AddCardToHand {
                 amount: None,
                 card_id: None,
@@ -291,7 +287,6 @@ impl Effect {
         }
     }
 }
-
 /// Enlève tous les serviteurs morts sur le board de chaque joueur.
 pub fn remove_dead_minions(state: &mut GameState) {
     for player in state.players.values_mut() {

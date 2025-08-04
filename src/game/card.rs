@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use crate::game::enums::{CardClass, CardType, Rarity, SpellSchool, Races};
 use crate::game::effects::Effect;
 use crate::game::triggers::Trigger;
+use crate::game::keywords::Keywords;
+
 
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
@@ -16,6 +18,7 @@ pub struct Card {
     pub text: Option<String>,
     pub card_class: CardClass,
     pub tags: HashMap<String, i32>,
+    pub keywords: Keywords,
     pub status: CardStatus,
     pub effects: Vec<Effect>,
     pub native_effects: Vec<Effect>,
@@ -44,6 +47,25 @@ impl Card {
         self.status.current_health.unwrap_or(0)
     }
     pub fn max_attacks_per_turn(&self) -> u8 {
-        if self.effects.contains(&Effect::Windfury) { 2 } else { 1 }
+        if self.has_kw(Keywords::MEGAWINDFURY) {
+            4
+        } else if self.has_kw(Keywords::WINDFURY) {
+            2
+        } else {
+            1
+        }
+    }
+
+    /// Retourne `true` si le serviteur possède le mot-clé donné.
+    pub fn has_kw(&self, kw: Keywords) -> bool {
+        self.keywords.has(kw)
+    }
+    /// Ajoute un mot-clé (utile pour Reborn, buffs, etc.).
+    pub fn add_kw(&mut self, kw: Keywords) {
+        self.keywords |= kw;
+    }
+    /// Retire un mot-clé (ex. perdre Divine Shield).
+    pub fn remove_kw(&mut self, kw: Keywords) {
+        self.keywords.remove(kw);
     }
 }

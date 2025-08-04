@@ -3,7 +3,9 @@ use std::collections::HashMap;
 use crate::game::card::{Card, CardStatus};
 use crate::game::enums::{CardClass, CardType, Rarity, SpellSchool, Races};
 use crate::game::effects::Effect;
-use crate::game::triggers::Trigger;
+use crate::game::triggers::{TriggerDef, Trigger};
+use crate::game::keywords::Keywords;
+
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct CardTemplate {
@@ -19,6 +21,8 @@ pub struct CardTemplate {
     pub rune_cost: Option<HashMap<String, u8>>,
     pub attack: Option<i32>,
     pub health: Option<i32>,
+    #[serde(default)]
+    pub mechanics: Vec<String>,
     pub races: Option<Vec<Races>>,    
     pub effects: Option<Vec<EffectTemplate>>,
     pub text: Option<String>,
@@ -62,6 +66,17 @@ impl CardTemplate {
         }
 
 
+        let mut triggers: Vec<TriggerDef> = Vec::new();
+
+        if let Some(effect_tpls) = &self.effects {
+            for tpl_eff in effect_tpls {
+                if let Some(trig_kind) = &tpl_eff.trigger {
+                    let eff = Effect::from_template(tpl_eff);
+                    triggers.push(TriggerDef { when: trig_kind.clone(), effect: eff });
+                }
+            }
+        }
+
         Card {
             card_id: self.card_id.clone(),
             name: self.card_name.clone(),
@@ -73,6 +88,7 @@ impl CardTemplate {
             text: self.text.clone(),
             card_class: self.card_class.clone(),
             tags: HashMap::new(),
+            keywords: self.keywords(),
             status: CardStatus {
                 current_health: self.health,
                 attack_modifiers: 0,
@@ -89,5 +105,9 @@ impl CardTemplate {
             races: self.races.clone(),
             triggered_effects,
         }
+    }
+
+    pub fn keywords(&self) -> Keywords {
+        Keywords::from_mechanics(&self.mechanics)
     }
 }

@@ -5,7 +5,7 @@ use crate::game::engine::utils::{minion_stats_string, IdString};
 use crate::game::triggers::Trigger;
 use std::collections::HashMap;
 use crate::data::card_template::CardTemplate;
-
+use crate::game::keywords::Keywords;
 
 
 pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, opponent_id: &PlayerId,
@@ -19,7 +19,7 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     if minion.status.attacks_this_turn >= minion.max_attacks_per_turn() {
                         false
                     } else if minion.status.just_played {
-                        minion.effects.contains(&Effect::Charge) || minion.effects.contains(&Effect::Rush)
+                        minion.has_kw(Keywords::CHARGE) || minion.has_kw(Keywords::RUSH)
                     } else {
                         true
                     }
@@ -33,7 +33,7 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                 let opponent = state.players.get(opponent_id).unwrap();
                 let taunt_minions: Vec<_> = opponent.zones.board
                     .iter()
-                    .filter(|m| m.effects.contains(&Effect::Taunt) && !m.effects.contains(&Effect::Stealth))
+                    .filter(|m| m.has_kw(Keywords::TAUNT) && !m.has_kw(Keywords::STEALTH))
                     .collect();
 
                 if !taunt_minions.is_empty() {
@@ -41,7 +41,7 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                 } else {
                     let possible_targets: Vec<_> = opponent.zones.board
                         .iter()
-                        .filter(|m| !m.effects.contains(&Effect::Stealth))
+                        .filter(|m| !m.has_kw(Keywords::STEALTH))
                         .collect();
                     if !possible_targets.is_empty() {
                         possible_targets.first().map(|m| m.card_id.clone())
@@ -55,8 +55,9 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
             {
                 let player = state.players.get(current_id).unwrap();
                 if let Some(attacker) = player.zones.board.iter().find(|c| c.card_id == attacker_id) {
-                    let is_rush = attacker.effects.contains(&Effect::Rush);
-                    let is_charge = attacker.effects.contains(&Effect::Charge);
+                    let is_rush = attacker.has_kw(Keywords::RUSH);
+                    let is_charge = attacker.has_kw(Keywords::CHARGE);
+
 
                     if defender_id_opt.is_none() && attacker.status.just_played && is_rush && !is_charge {
                         // Incrémente attacks_this_turn quand on skip une attaque, pour éviter boucle infinie
@@ -100,8 +101,9 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     );
 
 
-                    attacker_has_lifesteal = attacker.effects.contains(&Effect::Lifesteal);
-                    defender_has_lifesteal = defender.effects.contains(&Effect::Lifesteal);
+                    attacker_has_lifesteal = attacker.has_kw(Keywords::LIFESTEAL);
+                    defender_has_lifesteal = defender.has_kw(Keywords::LIFESTEAL);
+
 
                     (attacker_dead, defender_dead, damage_by_attacker, damage_by_defender)
                         = perform_attack(attacker, defender);
@@ -127,13 +129,10 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     let player = state.players.get_mut(current_id).unwrap();
                     for minion in player.zones.board.iter_mut() {
                         if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.effects.contains(&Effect::Reborn)
+                            && minion.has_kw(Keywords::REBORN)
                         {
                             println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.effects = minion.native_effects.iter()
-                                .filter(|e| **e != Effect::Reborn)
-                                .cloned()
-                                .collect();
+                            minion.remove_kw(Keywords::REBORN);
                             minion.status.current_health = Some(1);
                         }
                     }
@@ -162,13 +161,10 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     let opponent = state.players.get_mut(opponent_id).unwrap();
                     for minion in opponent.zones.board.iter_mut() {
                         if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.effects.contains(&Effect::Reborn)
+                            && minion.has_kw(Keywords::REBORN)
                         {
                             println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.effects = minion.native_effects.iter()
-                                .filter(|e| **e != Effect::Reborn)
-                                .cloned()
-                                .collect();
+                            minion.remove_kw(Keywords::REBORN);
                             minion.status.current_health = Some(1);
                         }
                     }
@@ -221,8 +217,9 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                         None => continue,
                     };
 
-                    let is_rush = attacker.effects.contains(&Effect::Rush);
-                    let is_charge = attacker.effects.contains(&Effect::Charge);
+                    let is_rush = attacker.has_kw(Keywords::RUSH);
+                    let is_charge = attacker.has_kw(Keywords::CHARGE);
+
 
                     if is_rush && !is_charge {
                         // Incrémente attacks_this_turn quand on skip une attaque, pour éviter boucle infinie
@@ -235,7 +232,7 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     }
 
                     let damage = attacker.effective_attack();
-                    let attacker_has_lifesteal = attacker.effects.contains(&Effect::Lifesteal);
+                    let attacker_has_lifesteal = attacker.has_kw(Keywords::LIFESTEAL);
                     attacker.status.has_attacked = true;
 
                     println!(
@@ -274,13 +271,10 @@ pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, oppone
                     let player = state.players.get_mut(current_id).unwrap();
                     for minion in player.zones.board.iter_mut() {
                         if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.effects.contains(&Effect::Reborn)
+                            && minion.has_kw(Keywords::REBORN)
                         {
                             println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.effects = minion.native_effects.iter()
-                                .filter(|e| **e != Effect::Reborn)
-                                .cloned()
-                                .collect();
+                            minion.remove_kw(Keywords::REBORN);
                             minion.status.current_health = Some(1);
                         }
                     }
@@ -388,23 +382,15 @@ pub fn perform_attack(attacker: &mut Card, defender: &mut Card) -> (bool, bool, 
 
     // --- Divine Shield DEFENSEUR ---
     let mut actual_damage_to_defender = attacker_attack;
-    if defender.effects.contains(&Effect::DivineShield) && attacker_attack > 0 {
-        println!(
-            "{} est protégé par un Divine Shield (aucun dégât subi, bouclier perdu).",
-            defender.name
-        );
-        defender.effects.retain(|e| *e != Effect::DivineShield);
+    if defender.has_kw(Keywords::DIVINE_SHIELD) && attacker_attack > 0 {
+        defender.remove_kw(Keywords::DIVINE_SHIELD);
         actual_damage_to_defender = 0;
     }
 
     // --- Divine Shield ATTAQUANT (riposte) ---
     let mut actual_damage_to_attacker = defender_attack;
-    if attacker.effects.contains(&Effect::DivineShield) && defender_attack > 0 {
-        println!(
-            "{} est protégé par un Divine Shield (aucun dégât subi en riposte, bouclier perdu).",
-            attacker.name
-        );
-        attacker.effects.retain(|e| *e != Effect::DivineShield);
+    if attacker.has_kw(Keywords::DIVINE_SHIELD) && defender_attack > 0 {
+        attacker.remove_kw(Keywords::DIVINE_SHIELD);
         actual_damage_to_attacker = 0;
     }
 
@@ -413,21 +399,22 @@ pub fn perform_attack(attacker: &mut Card, defender: &mut Card) -> (bool, bool, 
     defender.status.current_health = Some(defender.effective_health() - actual_damage_to_defender);
 
     // --- POISONOUS ---
-    let attacker_has_poison = attacker.effects.contains(&Effect::Poisonous);
-    let defender_has_poison = defender.effects.contains(&Effect::Poisonous);
+    let attacker_has_poison = attacker.has_kw(Keywords::POISONOUS);
+    let defender_has_poison = defender.has_kw(Keywords::POISONOUS);
 
-    if attacker_has_poison && actual_damage_to_defender > 0 && !defender.effects.contains(&Effect::DivineShield) {
+
+    if attacker_has_poison && actual_damage_to_defender > 0 && !defender.has_kw(Keywords::DIVINE_SHIELD) {
         defender.status.current_health = Some(0);
         println!("{} tue instantanément {} grâce à Poisonous !", attacker.name, defender.name);
     }
 
-    if defender_has_poison && actual_damage_to_attacker > 0 && !attacker.effects.contains(&Effect::DivineShield) {
+    if defender_has_poison && actual_damage_to_attacker > 0 && !attacker.has_kw(Keywords::DIVINE_SHIELD) {
         attacker.status.current_health = Some(0);
         println!("{} tue instantanément {} en riposte grâce à Poisonous !", defender.name, attacker.name);
     }
 
     attacker.status.has_attacked = true;
-    attacker.effects.retain(|e| *e != Effect::Stealth);
+    attacker.remove_kw(Keywords::STEALTH);
 
     let attacker_dead = attacker.status.current_health.unwrap_or(0) <= 0;
     let defender_dead = defender.status.current_health.unwrap_or(0) <= 0;

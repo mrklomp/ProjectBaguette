@@ -1,6 +1,9 @@
 use std::collections::HashMap;
 use crate::game::player::Player;
 use crate::game::engine::utils::IdString;
+use std::collections::VecDeque;
+use crate::game::event::GameEvent;
+
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum PlayerId {
@@ -28,23 +31,28 @@ pub enum GamePhase {
 pub struct GameState {
     pub players: HashMap<PlayerId, Player>,
     pub current_player: PlayerId,
-    pub round: u32, // <--- NOUVEAU CHAMP !
+    pub round: u32,
     pub phase: GamePhase,
     pub winner: Option<PlayerId>,
+    pub event_queue: VecDeque<GameEvent>,
 }
 
 impl GameState {
     pub fn new(player1: Player, player2: Player) -> Self {
+        // 1. deux variables distinctes
         let mut players = HashMap::new();
+        let event_queue = VecDeque::new();
+
         players.insert(PlayerId::Player1, player1);
         players.insert(PlayerId::Player2, player2);
 
         Self {
             players,
             current_player: PlayerId::Player1,
-            round: 1, // <--- Démarre au round 1
+            round: 1,
             phase: GamePhase::InProgress,
             winner: None,
+            event_queue,
         }
     }
 
