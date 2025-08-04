@@ -16,22 +16,20 @@
       "UNDEAD",
       "DRAGON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "all_minion",
-        "trigger": "deathrattle",
-        "condition": {
-          "type": "holding",
-          "zone": "hand",
-          "races": "dragon"
-        }
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "damage",
+    "amount": 3,
+    "target": "all_minion",
+    "trigger": "deathrattle",
+    "condition": {
+      "type": "holding",
+      "zone": "hand",
+      "races": "dragon"
+    }
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> If you're holding\na Dragon, deal 3 damage\nto all minions."
   },
   "CORE_AV_328": {
@@ -50,27 +48,21 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "spellschool": "holy"
-        },
-        "trigger": "deathrattle"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "spellschool": "shadow"
-        },
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "spellschool": "holy" },
+    "trigger": "deathrattle"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "spellschool": "shadow" },
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Draw a\nHoly spell and a\nShadow spell."
   },
   "CORE_AV_337": {
@@ -89,38 +81,31 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "summon",
-        "amount": 2,
-        "card_id": "AV_337t",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "summon",
+    "amount": 2,
+    "card_id": "AV_337t",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Summon two\n2/4 Cubs with <b>Taunt</b>."
   },
   "AV_337t": {
-    "card_id": "AV_337t",
-    "card_name": "Mountain Cub",
-    "card_class": "HUNTER",
-    "card_type": "MINION",
-    "cost": 3,
-    "set": "ALTERAC_VALLEY",
-    "rarity": "COMMON",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 2,
-    "health": 4,
-    "races": [
-      "BEAST"
-    ],
-    "mechanics": [],
-    "effects": [],
-    "text": null
+  "card_id": "AV_337t",
+  "card_name": "Mountain Cub",
+  "card_class": "HUNTER",
+  "card_type": "MINION",
+  "cost": 3,
+  "set": "ALTERAC_VALLEY",
+  "rarity": "COMMON",
+  "collectible": false,
+  "attack": 2,
+  "health": 4,
+  "races": ["BEAST"],
+  "effect": [],
+  "raw_text": "<b>Taunt</b>"
   },
   "CORE_BAR_310": {
     "card_id": "CORE_BAR_310",
@@ -138,17 +123,15 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "heal",
-        "amount": 8,
-        "target": "all_friendly_character",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "heal",
+    "amount": 8,
+    "target": "all_friendly_character",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Restore #8 Health\nto all friendly characters."
   },
   "CORE_BAR_535": {
@@ -167,16 +150,14 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "gain_armor",
-        "amount": 5,
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "gain_armor",
+    "amount": 5,
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Gain 5 Armor."
   },
   "CORE_BAR_551": {
@@ -193,33 +174,26 @@
     "attack": 3,
     "health": 5,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "cost": 1
-        },
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "cost": 2
-        },
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "cost": 3
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "cost": 1 },
+    "trigger": "battlecry"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "cost": 2 },
+    "trigger": "battlecry"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "cost": 3 },
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Battlecry:</b> Draw a 1, 2,\n  and 3-Cost spell."
   },
   "CORE_BOT_533": {
@@ -238,16 +212,15 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "random": true,
-        "filter": "elemental",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "random": true,
+    "filter": "elemental",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Add a random Elemental to your hand."
   },
   "CORE_BT_115": {
@@ -266,18 +239,17 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": "spell",
-        "condition": {
-          "type": "cast_spell_last_turn"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": "spell",
+    "condition": {
+      "type": "cast_spell_last_turn"
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> If you cast\na spell last turn,\n<b>Discover</b> a spell."
   },
   "CORE_BT_187": {
@@ -294,15 +266,13 @@
     "attack": 3,
     "health": 5,
     "races": [],
-    "mechanics": [
-      "Charge"
-    ],
     "effects": [
-      {
-        "type": "aura",
-        "effect": "friendly_attacks_ignore_taunt"
-      }
-    ],
+  { "type": "charge" },
+  {
+    "type": "aura",
+    "effect": "friendly_attacks_ignore_taunt"
+  }
+],
     "text": "<b>Charge</b>\nAll friendly attacks ignore <b>Taunt</b>."
   },
   "CORE_BT_304": {
@@ -321,41 +291,35 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "summon",
-        "amount": 1,
-        "card_id": "BT_304t",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "summon",
+    "amount": 1,
+    "card_id": "BT_304t",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Summon a 5/5\nDreadlord with <b>Lifesteal</b>."
   },
-  "BT_304t": {
-    "card_id": "BT_304t",
-    "card_name": "Desperate Dreadlord",
-    "card_class": "WARLOCK",
-    "card_type": "MINION",
-    "cost": 5,
-    "set": "BLACK_TEMPLE",
-    "rarity": "TOKEN",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 5,
-    "health": 5,
-    "races": [
-      "DEMON"
-    ],
-    "mechanics": [
-      "Lifesteal"
-    ],
-    "effects": [],
-    "text": "<b>Lifesteal</b>"
-  },
+ "BT_304t" : {
+  "card_id": "BT_304t",
+  "card_name": "Desperate Dreadlord",
+  "card_class": "WARLOCK",
+  "card_type": "MINION",
+  "cost": 5,
+  "attack": 5,
+  "health": 5,
+  "set": "BLACK_TEMPLE",
+  "rarity": "TOKEN",
+  "collectible": false,
+  "races": ["DEMON"],
+  "effects": [
+    { "type": "lifesteal" }
+  ],
+  "text": "<b>Lifesteal</b>"
+},
+
   "CORE_BT_351": {
     "card_id": "CORE_BT_351",
     "card_name": "Battlefiend",
@@ -372,15 +336,14 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "buff",
-        "attack": 1,
-        "trigger": "after_hero_attack",
-        "target": "self"
-      }
-    ],
+    "effects":[
+  {
+    "type": "buff",
+    "attack": 1,
+    "trigger": "after_hero_attack",
+    "target": "self"
+  }
+],
     "text": "After your hero attacks, gain +1 Attack."
   },
   "CORE_BT_416": {
@@ -397,20 +360,17 @@
     "attack": 4,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "reduce",
-        "amount": 2,
-        "target": "next_friendly_card",
-        "filter": {
-          "races": "demon"
-        },
-        "duration": "until_played",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+  "type": "modify_cost",
+  "mode": "reduce",
+  "amount": 2,
+  "target": "next_friendly_card",
+  "filter": { "races": "demon" },
+  "duration": "until_played",
+  "trigger": "battlecry"
+}
+],
     "text": "<b>Battlecry:</b> The next Demon you play costs (2) less."
   },
   "CORE_BT_480": {
@@ -427,14 +387,13 @@
     "attack": 1,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "outcast"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "outcast"
+  }
+],
     "text": "<b>Outcast:</b> Draw a card."
   },
   "CORE_BT_493": {
@@ -453,17 +412,16 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "repeat": 6,
-        "target": "all_enemy_character",
-        "random": true,
-        "trigger": "end_of_turn"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "repeat": 6,
+    "target": "all_enemy_character",
+    "random": true,
+    "trigger": "end_of_turn"
+  }
+],
     "text": "At the end of your turn, deal 6 damage randomly split among all enemies."
   },
   "CORE_CFM_061": {
@@ -480,19 +438,18 @@
     "attack": 4,
     "health": 6,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "heal",
-        "amount": 6,
-        "target": "friendly_character",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "overload",
-        "amount": 1
-      }
-    ],
+  {
+    "type": "heal",
+    "amount": 6,
+    "target": "friendly_character",
+    "trigger": "battlecry"
+  },
+  {
+    "type": "overload",
+    "amount": 1
+  }
+],
     "text": "[x]<b>Battlecry:</b> Restore #6 Health.\n<b>Overload:</b> (1)"
   },
   "CORE_CFM_344": {
@@ -511,24 +468,17 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [
-      "Stealth"
-    ],
     "effects": [
-      {
-        "type": "summon_from_deck",
-        "amount": 2,
-        "filter": {
-          "races": "murloc"
-        },
-        "zone": "friendly_board",
-        "trigger": "on_kill",
-        "condition": {
-          "source": "self",
-          "combat_result": "killed_minion"
-        }
-      }
-    ],
+  { "type": "stealth" },
+  {
+    "type": "summon_from_deck",
+    "amount": 2,
+    "filter": { "races": "murloc" },
+    "zone": "friendly_board",
+    "trigger": "on_kill",
+    "condition": { "source": "self", "combat_result": "killed_minion" }
+  }
+],
     "text": "[x]<b>Stealth</b>\n   Whenever this attacks and   \nkills a minion, summon 2\n Murlocs from your deck."
   },
   "CORE_CFM_753": {
@@ -545,19 +495,15 @@
     "attack": 2,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 1,
-        "health": 1,
-        "target": {
-          "zone": "hand",
-          "card_type": "minion"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": 1,
+    "health": 1,
+    "target": { "zone": "hand", "card_type": "minion" },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give all minions in your hand +1/+1."
   },
   "CORE_CFM_781": {
@@ -574,18 +520,16 @@
     "attack": 2,
     "health": 4,
     "races": [],
-    "mechanics": [
-      "Stealth"
-    ],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "random": true,
-        "filter": "opponent_class",
-        "trigger": "on_attack"
-      }
-    ],
+  { "type": "stealth" },
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "random": true,
+    "filter": "opponent_class",
+    "trigger": "on_attack"
+  }
+],
     "text": "[x]<b>Stealth</b>. Whenever this\nattacks, add a random card\nto your hand <i>(from your\nopponent's class).</i>"
   },
   "CORE_CFM_790": {
@@ -602,19 +546,17 @@
     "attack": 2,
     "health": 6,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "summon",
-        "amount": 1,
-        "source": "hand",
-        "destination": "opponent_board",
-        "random": true,
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  {
+  "type": "summon",
+  "amount": 1,
+  "source": "hand",
+  "destination": "opponent_board",
+  "random": true,
+  "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Battlecry:</b> Your opponent\nsummons a random minion\nfrom their hand."
   },
   "CORE_CS2_042": {
@@ -633,15 +575,14 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 4,
-        "target": "any_character",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 4,
+    "target": "any",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Deal 4 damage."
   },
   "CORE_CS2_122": {
@@ -658,17 +599,16 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "target": "other_friendly_minion"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "target": "other_friendly_minion"
+    }
+  }
+],
     "text": "Your other minions have +1 Attack."
   },
   "CORE_CS2_142": {
@@ -685,13 +625,12 @@
     "attack": 2,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "spellpower",
-        "amount": 1
-      }
-    ],
+  {
+    "type": "spellpower",
+    "amount": 1
+  }
+],
     "text": "<b>Spell Damage +1</b>"
   },
   "CORE_CS2_179": {
@@ -708,10 +647,9 @@
     "attack": 3,
     "health": 5,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "taunt" }
+],
     "text": "<b>Taunt</b>"
   },
   "CORE_CS2_188": {
@@ -728,16 +666,15 @@
     "attack": 1,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 2,
-        "duration": "this_turn",
-        "target": "any_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": 2,
+    "duration": "this_turn",
+    "target": "any_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give a minion +2 Attack this turn."
   },
   "CORE_CS2_189": {
@@ -754,15 +691,14 @@
     "attack": 1,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "target": "any_character",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "target": "any",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Deal 1 damage."
   },
   "Core_CS2_200": {
@@ -779,7 +715,6 @@
     "attack": 6,
     "health": 7,
     "races": [],
-    "mechanics": [],
     "effects": [],
     "text": ""
   },
@@ -797,18 +732,17 @@
     "attack": 7,
     "health": 7,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "health": 1,
-          "target": "other_friendly_minion"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "health": 1,
+      "target": "other_friendly_minion"
+    }
+  }
+],
     "text": "Your other minions have +1/+1."
   },
   "CORE_CS2_231": {
@@ -827,7 +761,6 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [],
     "text": ""
   },
@@ -847,18 +780,17 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "card_type": "spell",
-          "card_class": "other"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+  "type": "discover",
+  "amount": 1,
+  "filter": {
+    "card_type": "spell",
+    "card_class": "other"
+  },
+  "trigger": "battlecry"
+}
+],
     "text": "<b>Battlecry:</b> <b>Discover</b> a spell from another class."
   },
   "CORE_DAL_609": {
@@ -877,27 +809,26 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "modify_cost",
-          "mode": "set",
-          "value": 0,
-          "target": "first_friendly_spell_played",
-          "duration": "once_per_turn"
-        }
-      },
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "card_type": "spell"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "aura",
+      "effect": {
+    "type": "modify_cost",
+    "mode": "set",
+    "value": 0,
+    "target": "first_friendly_spell_played",
+    "duration": "once_per_turn"
+  }
+},
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": {
+      "card_type": "spell"
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "Your first spell each\nturn costs (0).\n<b>Battlecry:</b> <b>Discover</b>\na spell."
   },
   "CORE_DAL_729": {
@@ -914,18 +845,17 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "zone": "opponent_hand",
-          "state": "copy"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+  "type": "discover",
+  "amount": 1,
+  "filter": {
+    "zone": "opponent_hand",
+    "state": "copy"
+  },
+  "trigger": "battlecry"
+}
+],
     "text": "[x]<b>Battlecry:</b> <b>Discover</b> a\ncopy of a card in your\nopponent's hand."
   },
   "CORE_DMF_067": {
@@ -944,33 +874,33 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "target": "friendly_hero",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "target": "enemy_hero",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "target": "friendly_hero",
-        "trigger": "deathrattle"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "target": "enemy_hero",
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+  "type": "draw",
+  "amount": 1,
+  "target": "friendly_hero",
+  "trigger": "battlecry"
+},
+{
+  "type": "draw",
+  "amount": 1,
+  "target": "enemy_hero",
+  "trigger": "battlecry"
+},
+
+  {
+  "type": "draw",
+  "amount": 1,
+  "target": "friendly_hero",
+  "trigger": "deathrattle"
+},
+{
+  "type": "draw",
+  "amount": 1,
+  "target": "enemy_hero",
+  "trigger": "deathrattle"
+}
+],
     "text": "<b>Battlecry and Deathrattle:</b> Each player draws a card."
   },
   "CORE_DMF_194": {
@@ -989,17 +919,14 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "races": "dragon"
-        },
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "races": "dragon" },
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Draw a Dragon."
   },
   "CORE_DMF_231": {
@@ -1016,24 +943,20 @@
     "attack": 6,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "copy_card_to_hand",
-        "from": {
-          "zone": "hand",
-          "position": [
-            "leftmost",
-            "rightmost"
-          ]
-        },
-        "to": {
-          "zone": "hand"
-        },
-        "amount": 2,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "copy_card_to_hand",
+    "from": {
+      "zone": "hand",
+      "position": ["leftmost", "rightmost"]
+    },
+    "to": {
+      "zone": "hand"
+    },
+    "amount": 2,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Copy the left- and right-most cards in your hand."
   },
   "CORE_DMF_511": {
@@ -1050,20 +973,17 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "reduce",
-        "amount": 2,
-        "target": "next_friendly_card",
-        "filter": {
-          "type": "combo"
-        },
-        "duration": "this_turn",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "modify_cost",
+    "mode": "reduce",
+    "amount": 2,
+    "target": "next_friendly_card",
+    "filter": { "type": "combo" },
+    "duration": "this_turn",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Your next\n<b>Combo</b> card this turn costs (2) less."
   },
   "CORE_DMF_734": {
@@ -1080,23 +1000,21 @@
     "attack": 4,
     "health": 6,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "grant_deathrattle",
-        "effect": {
-          "type": "summon",
-          "amount": 1,
-          "card_id": "CORE_DMF_734",
-          "destination": "friendly_board"
-        },
-        "target": "friendly_minion",
-        "random": true,
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "grant_deathrattle",
+    "effect": {
+      "type": "summon",
+      "amount": 1,
+      "card_id": "CORE_DMF_734",
+      "destination": "friendly_board"
+    },
+    "target": "friendly_minion",
+    "random": true,
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Give a random\nfriendly minion \"<b>Deathrattle:</b>\nSummon Greybough.\""
   },
   "CORE_DRG_079": {
@@ -1115,15 +1033,11 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [
-      "Divine Shield",
-      "Rush"
-    ],
     "effects": [
-      {
-        "type": "elusive"
-      }
-    ],
+  { "type": "divine_shield" },
+  { "type": "elusive" },
+  { "type": "rush" }
+],
     "text": "<b>Rush</b>\n<b>Divine Shield</b>\n<b>Elusive</b>"
   },
   "CORE_DRG_095": {
@@ -1142,15 +1056,14 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "set_health",
-        "value": 1,
-        "target": "all_enemy_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "set_health",
+    "value": 1,
+    "target": "all_enemy_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Change the Health of all enemy minions to 1."
   },
   "CORE_DRG_107": {
@@ -1170,43 +1083,40 @@
       "ELEMENTAL",
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "card_id": "EX1_277",
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "card_id": "EX1_277",
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Add an 'Arcane Missiles' spell to your hand."
   },
   "VAN_EX1_277": {
-    "card_id": "VAN_EX1_277",
-    "card_name": "Arcane Missiles",
-    "card_class": "MAGE",
-    "card_type": "SPELL",
-    "cost": 1,
-    "set": "VANILLA",
-    "rarity": "FREE",
-    "collectible": true,
-    "spell_school": "ARCANE",
-    "rune_cost": null,
-    "attack": null,
-    "health": null,
-    "races": [],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "repeat": 3,
-        "target": "all_enemy_character",
-        "random": true
-      }
-    ],
-    "text": "Deal 3 damage randomly split among all enemy characters."
-  },
+  "card_id": "VAN_EX1_277",
+  "card_name": "Arcane Missiles",
+  "card_class": "MAGE",
+  "card_type": "SPELL",
+  "cost": 1,
+  "set": "VANILLA",
+  "rarity": "FREE",
+  "collectible": true,
+  "spell_school": "ARCANE",
+  "attack": null,
+  "health": null,
+  "races": [],
+  "effects": [
+    {
+      "type": "damage",
+      "amount": 1,
+      "repeat": 3,
+      "target": "all_enemy_character",
+      "random": true
+    }
+  ],
+  "text": "Deal 3 damage randomly split among all enemy characters."
+},
   "CORE_DRG_229": {
     "card_id": "CORE_DRG_229",
     "card_name": "Bronze Explorer",
@@ -1223,19 +1133,19 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [
-      "Lifesteal"
-    ],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "races": "dragon"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "lifesteal"
+  },
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": {
+      "races": "dragon"
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Lifesteal</b>\n<b>Battlecry:</b> <b>Discover</b> a Dragon."
   },
   "CORE_DRG_403": {
@@ -1252,17 +1162,16 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "increase",
-        "amount": 2,
-        "target": "opponent_hero_power",
-        "duration": "until_used",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "modify_cost",
+    "mode": "increase",
+    "amount": 2,
+    "target": "opponent_hero_power",
+    "duration": "until_used",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Your opponent's next Hero Power costs (2) more."
   },
   "CORE_EDR_001": {
@@ -1279,19 +1188,18 @@
     "attack": 2,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 2,
-        "random": true,
-        "filter": {
-          "card_class": "mage",
-          "card_type": "spell"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 2,
+    "random": true,
+    "filter": {
+      "card_class": "mage",
+      "card_type": "spell"
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Add 2 random Mage spells to your hand."
   },
   "CORE_EDR_003": {
@@ -1314,25 +1222,24 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
       {
-        "type": "aura",
-        "effect": {
-          "type": "modify_corpse_gain",
-          "multiplier": 2
-        },
-        "target": "friendly_hero"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "spends_corpse": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  "type": "aura",
+  "effect": {
+    "type": "modify_corpse_gain",
+    "multiplier": 2
+  },
+  "target": "friendly_hero"
+},
+{
+    "type": "draw",
+    "amount": 1,
+    "filter": {
+      "spends_corpse": true
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "You gain twice as many\n<b>Corpses</b> as normal.\n<b>Battlecry:</b> Draw a card that spends <b>Corpses</b>."
   },
   "CORE_ETC_523": {
@@ -1355,19 +1262,19 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "health_instead_of_mana",
-        "condition": {
-          "hero_healed_this_turn": true
-        },
-        "target": "self"
-      }
-    ],
+  {
+    "type": "taunt"
+  },
+  {
+    "type": "modify_cost",
+    "mode": "health_instead_of_mana",
+    "condition": {
+      "hero_healed_this_turn": true
+    },
+    "target": "self"
+  }
+],
     "text": "[x]<b>Taunt</b>\nCosts Health instead\nof Mana if your hero was\nhealed this turn."
   },
   "CORE_EX1_002": {
@@ -1386,22 +1293,22 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "tradeable"
-      },
-      {
-        "type": "destroy",
-        "target": "enemy_minion",
-        "condition": {
-          "has_taunt": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "tradeable"
+  },
+  {
+    "type": "taunt"
+  },
+  {
+  "type": "destroy",
+  "target": "enemy_minion",
+  "condition": {
+    "has_taunt": true
+  },
+  "trigger": "battlecry"
+}
+],
     "text": "<b>Tradeable</b>\n <b>Battlecry:</b> Destroy an  enemy minion with <b>Taunt</b>."
   },
   "CORE_EX1_005": {
@@ -1418,19 +1325,16 @@
     "attack": 4,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "destroy",
-        "target": "enemy_minion",
-        "condition": {
-          "attack": {
-            "min": 7
-          }
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "destroy",
+    "target": "enemy_minion",
+    "condition": {
+      "attack": { "min": 7 }
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Tradeable</b>\n<b>Battlecry:</b> Destroy a minion\nwith 7 or more Attack."
   },
   "CORE_EX1_007": {
@@ -1447,17 +1351,16 @@
     "attack": 1,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
       {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "after_any_damage",
-        "condition": {
-          "damage_taken": true
-        }
-      }
-    ],
+    "type": "draw",
+    "amount": 1,
+    "trigger": "after_any_damage",
+    "condition": {
+      "damage_taken": true
+    }
+  }
+],
     "text": "Whenever this minion takes damage, draw a card."
   },
   "CORE_EX1_010": {
@@ -1474,10 +1377,11 @@
     "attack": 2,
     "health": 1,
     "races": [],
-    "mechanics": [
-      "Stealth"
-    ],
-    "effects": [],
+    "effects": [
+  {
+    "type": "stealth"
+  }
+],
     "text": "<b>Stealth</b>"
   },
   "CORE_EX1_011": {
@@ -1494,15 +1398,14 @@
     "attack": 2,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "heal",
-        "amount": 2,
-        "target": "any_character",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "heal",
+    "amount": 2,
+    "target": "any",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Restore #2 Health."
   },
   "CORE_EX1_012": {
@@ -1521,18 +1424,18 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "spellpower",
-        "amount": 1
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "deathrattle"
-      }
-    ],
+  "effects": [
+    {
+      "type": "spellpower",
+      "amount": 1
+    },
+    {
+      "type": "draw",
+      "amount": 1,
+      "trigger": "deathrattle"
+    }
+  ],
+
     "text": "<b>Spell Damage +1</b>\n<b>Deathrattle:</b> Draw a card."
   },
   "CORE_EX1_014": {
@@ -1551,43 +1454,42 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
       {
-        "type": "add_card_to_hand",
-        "card_id": "EX1_014t",
-        "amount": 2,
-        "zone": "opponent_hand",
-        "trigger": "battlecry"
-      }
+  "type": "add_card_to_hand",
+  "card_id": "EX1_014t",
+  "amount": 2,
+  "zone": "opponent_hand",
+  "trigger": "battlecry"
+}
     ],
     "text": "<b>Battlecry:</b> Give your opponent 2 Bananas."
   },
   "EX1_014t": {
-    "card_id": "EX1_014t",
-    "card_name": "Bananas",
-    "card_class": "NEUTRAL",
-    "card_type": "SPELL",
-    "cost": 1,
-    "set": "EXPERT1",
-    "rarity": "TOKEN",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": null,
-    "health": null,
-    "races": [],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "buff",
-        "target": "any_minion",
-        "attack": 1,
-        "health": 1
-      }
-    ],
-    "text": "Give a minion +1/+1."
-  },
+  "card_id": "EX1_014t",
+  "card_name": "Bananas",
+  "card_class": "NEUTRAL",
+  "card_type": "SPELL",
+  "cost": 1,
+  "set": "EXPERT1",
+  "rarity": "TOKEN",
+  "collectible": false,
+  "attack": null,
+  "health": null,
+  "races": [],
+  "spell_school": null,
+  "rune_cost": null,
+  "effects": [
+    {
+      "type": "buff",
+      "target": "any_minion",
+      "attack": 1,
+      "health": 1
+    }
+  ],
+  "text": "Give a minion +1/+1."
+},
+
   "CORE_EX1_028": {
     "card_id": "CORE_EX1_028",
     "card_name": "Stranglethorn Tiger",
@@ -1604,10 +1506,11 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [
-      "Stealth"
+    "effects": [
+      {
+        "type": "stealth"
+      }
     ],
-    "effects": [],
     "text": "<b>Stealth</b>"
   },
   "CORE_EX1_043": {
@@ -1626,17 +1529,16 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "buff",
-        "target": "self",
-        "health": {
-          "value": "cards_in_hand"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  "effects": [
+    {
+      "type": "buff",
+      "target": "self",
+      "health": {
+        "value": "cards_in_hand"
+      },
+      "trigger": "battlecry"
+    }
+  ],
     "text": "<b>Battlecry:</b> Gain +1 Health for each card in your hand."
   },
   "CORE_EX1_049": {
@@ -1653,15 +1555,14 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "return_to_hand",
-        "target": "friendly_minion",
-        "zone": "board",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "return_to_hand",
+    "target": "friendly_minion",
+    "zone": "board",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Return a friendly minion from the battlefield to your hand."
   },
   "CORE_EX1_058": {
@@ -1678,17 +1579,15 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "grant_mechanic",
-        "mechanic": "taunt",
-        "target": "adjacent_friendly_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "grant_mechanic",
+    "mechanic": "taunt",
+    "target": "adjacent_friendly_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give adjacent minions <b>Taunt</b>."
   },
   "CORE_EX1_059": {
@@ -1707,14 +1606,13 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "swap_stats",
-        "target": "any_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "swap_stats",
+    "target": "any_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Swap the Attack and Health of a minion."
   },
   "CORE_EX1_082": {
@@ -1731,17 +1629,16 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "repeat": 3,
-        "target": "other_character",
-        "random": true,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "repeat": 3,
+    "target": "other_character",
+    "random": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Deal 3 damage randomly split between all other characters."
   },
   "CORE_EX1_096": {
@@ -1758,14 +1655,13 @@
     "attack": 2,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Draw a card."
   },
   "CORE_EX1_100": {
@@ -1782,15 +1678,14 @@
     "attack": 0,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "copy_card_to_hand",
-        "card_type": "spell",
-        "target": "other_player",
-        "trigger": "on_spell_cast"
-      }
-    ],
+  {
+    "type": "copy_card_to_hand",
+    "card_type": "spell",
+    "target": "other_player",
+    "trigger": "on_spell_cast"
+  }
+],
     "text": "Whenever a player casts a spell, put a copy into the other player’s hand."
   },
   "CORE_EX1_103": {
@@ -1809,18 +1704,15 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "target": "other_friendly_minion",
-        "filter": {
-          "races": "murloc"
-        },
-        "health": 2,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "target": "other_friendly_minion",
+    "filter": { "races": "murloc" },
+    "health": 2,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give your other Murlocs +2 Health."
   },
   "CORE_EX1_110": {
@@ -1837,36 +1729,32 @@
     "attack": 5,
     "health": 5,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "summon",
-        "card_id": "EX1_110t",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "summon",
+    "card_id": "EX1_110t",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Summon a\n5/5 Baine Bloodhoof."
   },
   "EX1_110t": {
-    "card_id": "EX1_110t",
-    "card_name": "Baine Bloodhoof",
-    "card_class": "NEUTRAL",
-    "card_type": "MINION",
-    "cost": 5,
-    "set": "EXPERT1",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 5,
-    "health": 5,
-    "races": null,
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "EX1_110t",
+  "card_name": "Baine Bloodhoof",
+  "card_class": "NEUTRAL",
+  "card_type": "MINION",
+  "cost": 5,
+  "set": "EXPERT1",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 5,
+  "health": 5,
+  "races": null,
+  "raw_text": ""
+},
   "CORE_EX1_131": {
     "card_id": "CORE_EX1_131",
     "card_name": "Defias Ringleader",
@@ -1881,34 +1769,32 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "summon",
-        "card_id": "EX1_131t",
-        "trigger": "combo"
-      }
-    ],
+  {
+    "type": "summon",
+    "card_id": "EX1_131t",
+    "trigger": "combo"
+  }
+],
     "text": "<b>Combo:</b> Summon a 2/1 Defias Bandit."
   },
   "EX1_131t": {
-    "card_id": "EX1_131t",
-    "card_name": "Defias Bandit",
-    "card_class": "ROGUE",
-    "card_type": "MINION",
-    "cost": 1,
-    "set": "EXPERT1",
-    "rarity": "TOKEN",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 2,
-    "health": 1,
-    "races": null,
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "EX1_131t",
+  "card_name": "Defias Bandit",
+  "card_class": "ROGUE",
+  "card_type": "MINION",
+  "cost": 1,
+  "set": "EXPERT1",
+  "rarity": "TOKEN",
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 2,
+  "health": 1,
+  "races": null,
+  "effect": null,
+  "raw_text": ""
+},
   "CORE_EX1_134": {
     "card_id": "CORE_EX1_134",
     "card_name": "SI:7 Agent",
@@ -1923,15 +1809,14 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "any_character",
-        "trigger": "combo"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 3,
+    "target": "any",
+    "trigger": "combo"
+  }
+],
     "text": "<b>Combo:</b> Deal 3 damage."
   },
   "CORE_EX1_162": {
@@ -1950,17 +1835,16 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "target": "adjacent_friendly_minion"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "target": "adjacent_friendly_minion"
+    }
+  }
+],
     "text": "Adjacent minions have +1 Attack."
   },
   "CORE_EX1_193": {
@@ -1979,18 +1863,17 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "filter": {
-          "zone": "opponent_deck"
-        },
-        "mode": "copy",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "filter": {
+      "zone": "opponent_deck"
+    },
+    "mode": "copy",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Copy a card in your opponent’s deck and add it to your hand."
   },
   "CORE_EX1_198": {
@@ -2007,20 +1890,19 @@
     "attack": 7,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "destroy",
-        "target": "any_minion",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "gain_health",
-        "value": "destroyed_minion_health",
-        "target": "self",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "destroy",
+    "target": "any_minion",
+    "trigger": "battlecry"
+  },
+  {
+    "type": "gain_health",
+    "value": "destroyed_minion_health",
+    "target": "self",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Destroy a minion and gain its Health."
   },
   "CORE_EX1_250": {
@@ -2039,15 +1921,10 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "overload",
-        "amount": 2
-      }
-    ],
+  { "type": "taunt" },
+  { "type": "overload", "amount": 2 }
+],
     "text": "<b>Taunt</b>\n<b>Overload</b>: (2)"
   },
   "CORE_EX1_298": {
@@ -2066,19 +1943,16 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "cant_attack"
-      },
-      {
-        "type": "damage",
-        "amount": 8,
-        "target": "enemy_character",
-        "random": true,
-        "trigger": "end_of_turn"
-      }
-    ],
+  { "type": "cant_attack" },
+  {
+    "type": "damage",
+    "amount": 8,
+    "target": "enemy_character",
+    "random": true, 
+    "trigger": "end_of_turn"
+  }
+],
     "text": "Can't attack. At the end of your turn, deal 8 damage to a random enemy."
   },
   "CORE_EX1_310": {
@@ -2097,17 +1971,15 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [
-      "Charge"
-    ],
     "effects": [
-      {
-        "type": "discard",
-        "amount": 2,
-        "random": true,
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "charge" },
+  {
+    "type": "discard",
+    "amount": 2,
+    "random": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Charge</b>. <b>Battlecry:</b> Discard two random cards."
   },
   "CORE_EX1_319": {
@@ -2126,15 +1998,15 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "friendly_hero",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 3,
+    "target": "friendly_hero",
+    "trigger": "battlecry"
+  }
+]
+,
     "text": "<b>Battlecry:</b> Deal 3 damage to your hero."
   },
   "CORE_EX1_362": {
@@ -2151,15 +2023,14 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "grant_mechanic",
-        "mechanic": "divine_shield",
-        "target": "friendly_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "grant_mechanic",
+    "mechanic": "divine_shield",
+    "target": "friendly_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give a friendly minion <b>Divine Shield</b>."
   },
   "CORE_EX1_383": {
@@ -2176,37 +2047,33 @@
     "attack": 8,
     "health": 8,
     "races": [],
-    "mechanics": [
-      "Divine Shield",
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "equip_weapon",
-        "card_id": "EX1_383t",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "divine_shield" },
+  { "type": "taunt" },
+  {
+    "type": "equip_weapon",
+    "card_id": "EX1_383t",
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Divine Shield</b>, <b>Taunt</b> <b>Deathrattle:</b> Equip a 5/3 Ashbringer."
   },
   "EX1_383t": {
-    "card_id": "EX1_383t",
-    "card_name": "Ashbringer",
-    "card_class": "PALADIN",
-    "card_type": "WEAPON",
-    "cost": 5,
-    "set": "EXPERT1",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 5,
-    "health": 3,
-    "races": null,
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "EX1_383t",
+  "card_name": "Ashbringer",
+  "card_class": "PALADIN",
+  "card_type": "WEAPON",
+  "cost": 5,
+  "set": "EXPERT1",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 5,
+  "health": 3,
+  "effect": null,
+  "raw_text": ""
+},
   "CORE_EX1_414": {
     "card_id": "CORE_EX1_414",
     "card_name": "Grommash Hellscream",
@@ -2221,19 +2088,15 @@
     "attack": 4,
     "health": 9,
     "races": [],
-    "mechanics": [
-      "Charge"
-    ],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 6,
-        "condition": {
-          "damaged": true
-        },
-        "target": "self"
-      }
-    ],
+  { "type": "charge" },
+  {
+    "type": "buff",
+    "attack": 6,
+    "condition": { "damaged": true },
+    "target": "self"
+  }
+],
     "text": "<b>Charge</b>\nHas +6 Attack while damaged."
   },
   "CORE_EX1_506": {
@@ -2252,15 +2115,14 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
-    "effects": [
+    "effects": [  
       {
-        "type": "summon",
-        "amount": 1,
-        "card_id": "CORE_EX1_506a",
-        "trigger": "battlecry"
-      }
-    ],
+    "type": "summon",
+    "amount": 1,
+    "card_id": "CORE_EX1_506a",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Summon a 1/1 Murloc Scout."
   },
   "CORE_EX1_507": {
@@ -2279,20 +2141,17 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 2,
-          "target": "other_friendly_minion",
-          "filter": {
-            "races": "murloc"
-          }
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 2,
+      "target": "other_friendly_minion",
+      "filter": { "races": "murloc" }
+    }
+  }
+],
     "text": "Your other Murlocs have +2 Attack."
   },
   "CORE_EX1_509": {
@@ -2311,40 +2170,37 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "target": "self",
-          "trigger": "summon_murloc"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "target": "self",
+      "trigger": "summon_murloc" 
+    }
+  }
+]
+,
     "text": "Whenever you summon a Murloc, gain +1 Attack."
   },
   "CORE_EX1_506a": {
-    "card_id": "CORE_EX1_506a",
-    "card_name": "Murloc Scout",
-    "card_class": "NEUTRAL",
-    "card_type": "MINION",
-    "cost": 1,
-    "set": "CORE",
-    "rarity": "COMMON",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 1,
-    "health": 1,
-    "races": [
-      "MURLOC"
-    ],
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "CORE_EX1_506a",
+  "card_name": "Murloc Scout",
+  "card_class": "NEUTRAL",
+  "card_type": "MINION",
+  "cost": 1,
+  "set": "CORE",
+  "rarity": "COMMON",
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 1,
+  "health": 1,
+  "races": ["MURLOC"],
+  "effect": null,
+  "raw_text": ""
+},
   "CORE_EX1_559": {
     "card_id": "CORE_EX1_559",
     "card_name": "Archmage Antonidas",
@@ -2359,18 +2215,18 @@
     "attack": 5,
     "health": 7,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "add_card_to_hand",
-          "card_id": "CORE_CS2_029",
-          "amount": 1,
-          "trigger": "on_spell_cast"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "add_card_to_hand",
+      "card_id": "CORE_CS2_029",
+      "amount": 1,
+      "trigger": "on_spell_cast"
+    }
+  }
+]
+,
     "text": "Whenever you cast a spell, add a 'Fireball' spell to your hand."
   },
   "CORE_EX1_565": {
@@ -2389,17 +2245,16 @@
     "races": [
       "TOTEM"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 2,
-          "target": "adjacent_friendly_minion"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 2,
+      "target": "adjacent_friendly_minion"
+    }
+  }
+],
     "text": "Adjacent minions have +2 Attack."
   },
   "CORE_EX1_604": {
@@ -2416,21 +2271,18 @@
     "attack": 2,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "target": "self",
-          "trigger": "after_damage",
-          "condition": {
-            "target": "any_minion"
-          }
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "target": "self",
+      "trigger": "after_damage",
+      "condition": { "target": "any_minion" }
+    }
+  }
+],
     "text": "Whenever a minion takes damage, gain +1 Attack."
   },
   "CORE_FP1_007": {
@@ -2447,36 +2299,32 @@
     "attack": 0,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "summon",
-        "card_id": "FP1_007t",
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "summon",
+    "card_id": "FP1_007t",
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Summon a 4/4 Nerubian."
   },
   "FP1_007t": {
-    "card_id": "FP1_007t",
-    "card_name": "Nerubian",
-    "card_class": "NEUTRAL",
-    "card_type": "MINION",
-    "cost": 4,
-    "set": "EXPERT1",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 4,
-    "health": 4,
-    "races": [
-      "UNDEAD"
-    ],
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "FP1_007t",
+  "card_name": "Nerubian",
+  "card_class": "NEUTRAL",
+  "card_type": "MINION",
+  "cost": 4,
+  "set": "EXPERT1",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 4,
+  "health": 4,
+  "races": ["UNDEAD"],
+  "effect": null,
+  "raw_text": ""
+},
   "CORE_GIL_534": {
     "card_id": "CORE_GIL_534",
     "card_name": "Hench-Clan Thug",
@@ -2493,19 +2341,18 @@
     "races": [
       "QUILBOAR"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "health": 1,
-          "target": "self",
-          "trigger": "after_hero_attack"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "health": 1,
+      "target": "self",
+      "trigger": "after_hero_attack"
+    }
+  }
+],
     "text": "After your hero attacks, give this minion +1/+1."
   },
   "CORE_GIL_598": {
@@ -2522,19 +2369,15 @@
     "attack": 6,
     "health": 6,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "replay_cards",
-        "filter": {
-          "card_class": "other_classes",
-          "played_this_game": true
-        },
-        "target": "self",
-        "random_targets": true,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "replay_cards",
+    "filter": { "card_class": "other_classes", "played_this_game": true },
+    "target": "self",
+    "random_targets": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Battlecry:</b> Replay every card\nfrom another class you've\nplayed this game <i>(targets\nchosen randomly)</i>."
   },
   "CORE_GIL_622": {
@@ -2553,21 +2396,20 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "enemy_hero",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "heal",
-        "amount": 3,
-        "target": "friendly_hero",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 3,
+    "target": "enemy_hero",
+    "trigger": "battlecry"
+  },
+  {
+    "type": "heal",
+    "amount": 3,
+    "target": "friendly_hero",
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Battlecry:</b> Deal 3 damage to\nthe enemy hero. Restore\n#3 Health to your hero."
   },
   "CORE_GVG_085": {
@@ -2586,11 +2428,10 @@
     "races": [
       "MECHANICAL"
     ],
-    "mechanics": [
-      "Divine Shield",
-      "Taunt"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "taunt" },
+  { "type": "divine_shield" }
+],
     "text": "<b>Taunt</b>\n<b>Divine Shield</b>"
   },
   "CORE_GVG_114": {
@@ -2609,19 +2450,18 @@
     "races": [
       "MECHANICAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "summon",
-        "filter": {
-          "card_type": "minion",
-          "rarity": "legendary"
-        },
-        "amount": 1,
-        "random": true,
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "summon",
+    "filter": {
+      "card_type": "minion",
+      "rarity": "legendary"
+    },
+    "amount": 1,
+    "random": true,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Summon a random <b>Legendary</b> minion."
   },
   "CORE_ICC_038": {
@@ -2638,11 +2478,10 @@
     "attack": 1,
     "health": 1,
     "races": [],
-    "mechanics": [
-      "Divine Shield",
-      "Taunt"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "taunt" },
+  { "type": "divine_shield" }
+],
     "text": "<b>Taunt</b>\n<b>Divine Shield</b>"
   },
   "CORE_ICC_075": {
@@ -2661,15 +2500,14 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "target": "all_enemy_minion",
-        "trigger": "end_of_turn"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "target": "all_enemy_minion",
+    "trigger": "end_of_turn"
+  }
+],
     "text": "At the end of your turn, deal 1 damage to all enemy minions."
   },
   "CORE_ICC_210": {
@@ -2688,17 +2526,16 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 1,
-        "health": 1,
-        "target": "other_friendly_minion",
-        "random": true,
-        "trigger": "end_of_turn"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": 1,
+    "health": 1,
+    "target": "other_friendly_minion",
+    "random": true,
+    "trigger": "end_of_turn"
+  }
+],
     "text": "[x]At the end of your turn,\ngive another random\nfriendly minion +1/+1."
   },
   "CORE_ICC_214": {
@@ -2715,18 +2552,16 @@
     "attack": 4,
     "health": 8,
     "races": [],
-    "mechanics": [
-      "Lifesteal",
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "destroy",
-        "target": "enemy_minion",
-        "random": true,
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  { "type": "lifesteal" },
+  {
+    "type": "destroy",
+    "target": "enemy_minion",
+    "random": true,
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Taunt, Lifesteal</b>\n<b>Deathrattle:</b> Destroy a\n random enemy minion."
   },
   "CORE_KAR_061": {
@@ -2745,41 +2580,29 @@
     "races": [
       "MECHANICAL"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "races": [
-            "BEAST"
-          ]
-        },
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "races": [
-            "DRAGON"
-          ]
-        },
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "filter": {
-          "races": [
-            "MURLOC"
-          ]
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "taunt"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "races": ["BEAST"] },
+    "trigger": "battlecry"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "races": ["DRAGON"] },
+    "trigger": "battlecry"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "filter": { "races": ["MURLOC"] },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Taunt</b>\n<b>Battlecry:</b> Draw a Beast, Dragon, and Murloc from your deck."
   },
   "CORE_KAR_062": {
@@ -2796,22 +2619,20 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "condition": {
-          "type": "holding",
-          "zone": "hand",
-          "races": "dragon"
-        },
-        "filter": {
-          "races": "dragon"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "discover",
+    "amount": 1,
+    "condition": {
+      "type": "holding",
+      "zone": "hand",
+      "races": "dragon"
+    },
+    "filter": { "races": "dragon" },
+    "trigger": "battlecry"
+  }
+  
+],
     "text": "<b>Battlecry:</b> If you're holding a Dragon, <b>Discover</b>\na Dragon."
   },
   "CORE_KAR_069": {
@@ -2830,18 +2651,15 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "filter": {
-          "card_class": "other_classes"
-        },
-        "random": true,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "filter": { "card_class": "other_classes" },
+    "random": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Add a random card from another class to your hand."
   },
   "CORE_LOE_039": {
@@ -2861,22 +2679,15 @@
       "MECHANICAL",
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "races": "mechanical"
-        },
-        "condition": {
-          "control_other_friendly_minion": {
-            "races": "mechanical"
-          }
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": { "races": "mechanical" },
+    "condition": { "control_other_friendly_minion": { "races": "mechanical" } },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> If you control another Mech, <b>Discover</b> a Mech."
   },
   "CORE_LOOT_013": {
@@ -2895,17 +2706,15 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 2,
-        "target": "friendly_hero",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "damage",
+    "amount": 2,
+    "target": "friendly_hero",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Taunt</b>\n<b>Battlecry:</b> Deal 2 damage to your hero."
   },
   "CORE_LOOT_137": {
@@ -2924,10 +2733,9 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "taunt" }
+],
     "text": "<b>Taunt</b>"
   },
   "CORE_LOOT_231": {
@@ -2946,20 +2754,17 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "gain_armor",
-          "amount": {
-            "value": "spell_cost"
-          },
-          "target": "self",
-          "trigger": "on_spell_cast"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "gain_armor",
+      "amount": { "value": "spell_cost" },
+      "target": "self",
+      "trigger": "on_spell_cast"
+    }
+  }
+],
     "text": "Whenever you cast a spell, gain Armor equal to its Cost."
   },
   "CORE_LOOT_413": {
@@ -2978,14 +2783,13 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "gain_armor",
-        "amount": 3,
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "gain_armor",
+    "amount": 3,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Gain 3 Armor."
   },
   "CORE_NEW1_010": {
@@ -3004,13 +2808,12 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [
-      "Charge",
-      "Divine Shield",
-      "Taunt",
-      "Windfury"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "taunt" },
+  { "type": "windfury" },
+  { "type": "charge" },
+  { "type": "divine_shield" }
+],
     "text": "<b>Charge, Divine Shield, Taunt, Windfury</b>"
   },
   "CORE_NEW1_018": {
@@ -3029,17 +2832,14 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": {
-          "value": "weapon_attack"
-        },
-        "target": "self",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": { "value": "weapon_attack" },
+    "target": "self",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Gain Attack equal to the Attack\nof your weapon."
   },
   "CORE_NEW1_020": {
@@ -3058,18 +2858,17 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "damage",
-          "amount": 1,
-          "target": "all_minion",
-          "trigger": "on_spell_cast"
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "damage",
+      "amount": 1,
+      "target": "all_minion",
+      "trigger": "on_spell_cast"
+    }
+  }
+],
     "text": "After you cast a spell, deal 1 damage to ALL minions."
   },
   "CORE_NEW1_021": {
@@ -3086,14 +2885,13 @@
     "attack": 0,
     "health": 7,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "destroy",
-        "target": "all_minion",
-        "trigger": "start_of_turn"
-      }
-    ],
+  {
+    "type": "destroy",
+    "target": "all_minion",
+    "trigger": "start_of_turn"
+  }
+],
     "text": "At the start of your turn, destroy ALL minions."
   },
   "CORE_NEW1_022": {
@@ -3112,17 +2910,15 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "reduce",
-        "value": "weapon_attack",
-        "zone": "hand"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "modify_cost",
+    "mode": "reduce",
+    "value": "weapon_attack",
+    "zone": "hand"
+  }
+],
     "text": "<b>Taunt</b>\nCosts (1) less per Attack of your weapon."
   },
   "CORE_NEW1_023": {
@@ -3141,12 +2937,9 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "elusive"
-      }
-    ],
+  { "type": "elusive" }
+],
     "text": "<b>Elusive</b>"
   },
   "CORE_NEW1_027": {
@@ -3165,21 +2958,18 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "buff",
-          "attack": 1,
-          "health": 1,
-          "target": "other_friendly_minion",
-          "filter": {
-            "races": "pirate"
-          }
-        }
-      }
-    ],
+  {
+    "type": "aura",
+    "effect": {
+      "type": "buff",
+      "attack": 1,
+      "health": 1,
+      "target": "other_friendly_minion",
+      "filter": { "races": "pirate" }
+    }
+  }
+],
     "text": "Your other Pirates have +1/+1."
   },
   "CORE_NX2_028": {
@@ -3199,24 +2989,23 @@
       "MECHANICAL",
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
+  {
+    "type": "aura",
+    "effect": [
       {
-        "type": "aura",
-        "effect": [
-          {
-            "type": "gain_armor",
-            "amount": 4,
-            "target": "self"
-          },
-          {
-            "type": "draw",
-            "amount": 1
-          }
-        ],
-        "trigger": "after_hero_attack"
+        "type": "gain_armor",
+        "amount": 4,
+        "target": "self"
+      },
+      {
+        "type": "draw",
+        "amount": 1
       }
     ],
+    "trigger": "after_hero_attack"
+  }
+],
     "text": "After your hero attacks, gain 4 Armor and\ndraw a card."
   },
   "CORE_OG_044": {
@@ -3233,16 +3022,15 @@
     "attack": 3,
     "health": 6,
     "races": [],
-    "mechanics": [],
-    "effects": [
-      {
-        "type": "aura",
-        "effect": {
-          "type": "combine_choose_one",
-          "target": "friendly_choose_one_cards_and_powers"
-        }
-      }
-    ],
+    "effects":[
+  {
+    "type": "aura",
+    "effect": {
+      "type": "combine_choose_one",
+      "target": "friendly_choose_one_cards_and_powers"
+    }
+  }
+],
     "text": "Your <b>Choose One</b> cards and powers have both effects combined."
   },
   "CORE_OG_149": {
@@ -3261,15 +3049,14 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "target": "other_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "target": "other_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Deal 1 damage to all other minions."
   },
   "CORE_OG_218": {
@@ -3286,19 +3073,15 @@
     "attack": 2,
     "health": 6,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 3,
-        "target": "self",
-        "condition": {
-          "damaged": true
-        }
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "buff",
+    "attack": 3,
+    "target": "self",
+    "condition": { "damaged": true }
+  }
+],
     "text": "<b>Taunt</b>\nHas +3 Attack while damaged."
   },
   "CORE_OG_330": {
@@ -3317,18 +3100,15 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "filter": {
-          "card_class": "opponent_class"
-        },
-        "random": true,
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "filter": { "card_class": "opponent_class" },
+    "random": true,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Deathrattle:</b> Get a\nrandom card <i>(from your\nopponent's class)</i>."
   },
   "CORE_REV_023": {
@@ -3345,17 +3125,14 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "tradeable"
-      },
-      {
-        "type": "destroy",
-        "target": "enemy_location",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "tradeable" },
+  {
+    "type": "destroy",
+    "target": "enemy_location",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Tradeable</b>\n<b>Battlecry:</b> Destroy \nan enemy location."
   },
   "CORE_REV_308": {
@@ -3372,19 +3149,15 @@
     "attack": 1,
     "health": 1,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "summon",
-        "amount": 1,
-        "filter": {
-          "card_type": "minion",
-          "cost": 2
-        },
-        "random": true,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "summon",
+    "amount": 1,
+    "filter": { "card_type": "minion", "cost": 2 },
+    "random": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry</b>: Summon a random 2-Cost minion."
   },
   "CORE_REV_946": {
@@ -3403,17 +3176,14 @@
     "races": [
       "MECHANICAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "destroy",
-        "target": "deck_cards_not_starting_in_deck",
-        "zone": [
-          "both_decks"
-        ],
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "destroy",
+    "target": "deck_cards_not_starting_in_deck",
+    "zone": ["both_decks"],
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Destroy ALL cards in both players' decks that didn't start there."
   },
   "CORE_RLK_062": {
@@ -3432,17 +3202,15 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "summon",
-        "amount": 2,
-        "target": "self_copy",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "summon",
+    "amount": 2,
+    "target": "self_copy",
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Battlecry:</b> Summon two\ncopies of this minion."
   },
   "CORE_RLK_066": {
@@ -3463,28 +3231,23 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "spend_corpse",
-        "amount": 1,
-        "condition": {
-          "required": true
-        },
-        "trigger": "battlecry"
-      },
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "rune_cost": {
-            "blood": {
-              "min": 1
-            }
-          }
-        }
+  {
+    "type": "spend_corpse",
+    "amount": 1,
+    "condition": { "required": true },
+    "trigger": "battlecry"
+  },
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": {
+      "rune_cost": {
+        "blood": { "min": 1 }
       }
-    ],
+    }
+  }
+],
     "text": "<b>Battlecry:</b> Spend a\n<b>Corpse</b> to <b>Discover</b> a\nBlood Rune card."
   },
   "CORE_RLK_083": {
@@ -3507,17 +3270,16 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "target": "enemy_character",
-        "random": true,
-        "repeat": 2,
-        "trigger": "on_spell_cast"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "target": "enemy_character",
+    "random": true,
+    "repeat": 2,
+    "trigger": "on_spell_cast"
+  }
+],
     "text": "[x]After you cast a spell,\ndeal 1 damage to two\nrandom enemies."
   },
   "CORE_RLK_116": {
@@ -3538,24 +3300,15 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "rune_cost": {
-            "unholy": {
-              "min": 1
-            }
-          }
-        },
-        "condition": {
-          "friendly_undead_died_since_opponent_turn": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": { "rune_cost": { "unholy": { "min": 1 } } },
+    "condition": { "friendly_undead_died_since_opponent_turn": true },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> If a friendly Undead died after your\nlast turn, <b>Discover</b> an Unholy Rune card."
   },
   "CORE_RLK_121": {
@@ -3572,14 +3325,13 @@
     "attack": 2,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "on_friendly_undead_death"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "on_friendly_undead_death"
+  }
+],
     "text": "After a friendly Undead dies, draw a card."
   },
   "CORE_RLK_505": {
@@ -3602,25 +3354,24 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "spend_corpse",
-        "amount": 5,
-        "mode": "up_to",
-        "trigger": "battlecry"
-      },
-      {
-        "type": "repeat",
-        "times": "corpses_spent",
-        "effect": {
-          "type": "damage",
-          "amount": 2,
-          "target": "enemy_character",
-          "random": true
-        }
-      }
-    ],
+  {
+    "type": "spend_corpse",
+    "amount": 5,
+    "mode": "up_to",
+    "trigger": "battlecry"
+  },
+  {
+    "type": "repeat",
+    "times": "corpses_spent",
+    "effect": {
+      "type": "damage",
+      "amount": 2,
+      "target": "enemy_character",
+      "random": true
+    }
+  }
+],
     "text": "[x]<b>Battlecry:</b> Spend up to 5\n<b>Corpses</b>. Deal 2 damage to\na random enemy for each."
   },
   "CORE_RLK_745": {
@@ -3639,24 +3390,22 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Reborn"
-    ],
     "effects": [
-      {
-        "type": "spend_corpse",
-        "amount": 4,
-        "condition": {
-          "required": true
-        },
-        "trigger": "end_of_turn"
-      },
-      {
-        "type": "summon",
-        "target": "self_copy",
-        "trigger": "end_of_turn"
-      }
-    ],
+  {
+    "type": "reborn"
+  },
+  {
+    "type": "spend_corpse",
+    "amount": 4,
+    "condition": { "required": true },
+    "trigger": "end_of_turn"
+  },
+  {
+    "type": "summon",
+    "target": "self_copy",
+    "trigger": "end_of_turn"
+  }
+],
     "text": "[x]<b>Reborn</b>\nAt the end of your turn,\nspend 4 <b>Corpses</b> to summon\na copy of this minion."
   },
   "CORE_RLK_919": {
@@ -3675,16 +3424,15 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "banish_temporarily",
-        "amount": "all_other_minion",
-        "duration": "2_turns",
-        "return_to_board": true,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "banish_temporarily",
+    "amount": "all_other_minion",
+    "duration": "2_turns",
+    "return_to_board": true,
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Battlecry:</b> Send all\nother minions 2 turns\ninto the future."
   },
   "CORE_SCH_713": {
@@ -3701,18 +3449,17 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "increase",
-        "value": 1,
-        "target": "opponent_spells",
-        "zone": "hand",
-        "duration": "until_end_of_next_turn",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "modify_cost",
+    "mode": "increase",
+    "value": 1,
+    "target": "opponent_spells",
+    "zone": "hand",
+    "duration": "until_end_of_next_turn",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Your opponent's spells cost (1) more next turn."
   },
   "CORE_SW_030": {
@@ -3731,15 +3478,14 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "gain_armor",
-        "amount": 3,
-        "target": "self",
-        "trigger": "end_of_turn"
-      }
-    ],
+  {
+    "type": "gain_armor",
+    "amount": 3,
+    "target": "self",
+    "trigger": "end_of_turn"
+  }
+],
     "text": "At the end of your turn, gain 3 Armor."
   },
   "CORE_SW_066": {
@@ -3756,17 +3502,14 @@
     "attack": 4,
     "health": 4,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "tradeable"
-      },
-      {
-        "type": "silence",
-        "target": "minion",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "tradeable" },
+  {
+    "type": "silence",
+    "target": "minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Tradeable</b>\n<b>Battlecry:</b> <b>Silence</b>\na minion."
   },
   "CORE_SW_068": {
@@ -3786,17 +3529,15 @@
       "MECHANICAL",
       "DEMON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "gain_armor",
-        "amount": 8,
-        "target": "self",
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "gain_armor",
+    "amount": 8,
+    "target": "self",
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Taunt</b>\n<b>Deathrattle:</b> Gain 8 Armor."
   },
   "CORE_SW_072": {
@@ -3815,17 +3556,14 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "tradeable"
-      },
-      {
-        "type": "destroy",
-        "target": "opponent_weapon",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "tradeable" },
+  {
+    "type": "destroy",
+    "target": "opponent_weapon",
+    "trigger": "battlecry"
+  }
+],
     "text": "[x]<b>Tradeable</b>\n<b>Battlecry:</b> Destroy your\nopponent's weapon."
   },
   "CORE_SW_080": {
@@ -3842,29 +3580,28 @@
     "attack": 4,
     "health": 5,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "start_of_turn"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "end_of_turn"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "start_of_enemy_turn"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "end_of_enemy_turn"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "start_of_turn"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "end_of_turn"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "start_of_enemy_turn"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "end_of_enemy_turn"
+  }
+],
     "text": "[x]At the start and end\n of each player's turn,\ndraw a card."
   },
   "CORE_SW_431": {
@@ -3883,18 +3620,16 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [
-      "Rush"
-    ],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 3,
-        "target": "friendly_hero",
-        "duration": "this_turn",
-        "trigger": "after_self_attack"
-      }
-    ],
+  { "type": "rush" },
+  {
+    "type": "buff",
+    "attack": 3,
+    "target": "friendly_hero",
+    "duration": "this_turn",
+    "trigger": "after_self_attack"
+  }
+],
     "text": "[x]<b>Rush</b>. Whenever this\nattacks, give your hero\n+3 Attack this turn."
   },
   "CORE_SW_439": {
@@ -3913,55 +3648,59 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "shuffle_into_deck",
-        "amount": 4,
-        "card_id": "SW_439t",
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "shuffle_into_deck",
+    "amount": 4,
+    "card_id": "SW_439t",
+    "trigger": "deathrattle"
+  }
+]
+,
     "text": "[x]<b>Deathrattle:</b> Shuffle 4 Acorns\ninto your deck. When drawn,\nsummon a 2/1 Squirrel."
   },
   "SW_439t": {
-    "card_id": "SW_439t",
-    "card_name": "Acorn",
-    "card_class": "DRUID",
-    "card_type": "SPELL",
-    "cost": 1,
-    "set": "CORE",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": null,
-    "health": null,
-    "races": null,
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
-  "SW_439t2": {
+  "card_id": "SW_439t",
+  "card_name": "Acorn",
+  "card_class": "DRUID",
+  "card_type": "SPELL",
+  "cost": 1,
+  "set": "CORE",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": null,
+  "health": null,
+  "races": null,
+  "effect": [
+  {
+    "type": "summon",
+    "amount": 1,
     "card_id": "SW_439t2",
-    "card_name": "Squirrel",
-    "card_class": "DRUID",
-    "card_type": "MINION",
-    "cost": 1,
-    "set": "CORE",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 2,
-    "health": 1,
-    "races": [
-      "BEAST"
-    ],
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+    "trigger": "when_drawn"
+  }
+],
+  "raw_text": "When drawn, summon a 2/1 Squirrel."
+},
+
+"SW_439t2": {
+  "card_id": "SW_439t2",
+  "card_name": "Squirrel",
+  "card_class": "DRUID",
+  "card_type": "MINION",
+  "cost": 1,
+  "set": "CORE",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 2,
+  "health": 1,
+  "races": ["BEAST"],
+  "effect": [],
+  "raw_text": ""
+},
   "CORE_TOY_100": {
     "card_id": "CORE_TOY_100",
     "card_name": "Gnomelia, S.A.F.E. Pilot",
@@ -3976,18 +3715,17 @@
     "attack": 4,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
       {
-        "type": "cleave"
-      },
-      {
-        "type": "damage",
-        "amount": 2,
-        "target": "all_enemy_character",
-        "trigger": "deathrattle"
-      }
-    ],
+  "type": "cleave"
+  },
+  {
+    "type": "damage",
+    "amount": 2,
+    "target": "all_enemy_character",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Rush</b>. Also damages minions\nnext to whomever this attacks.\n<b>Deathrattle:</b> Deal 2 damage\nto all enemies."
   },
   "CORE_TRL_345": {
@@ -4006,18 +3744,17 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "return_to_hand",
-        "filter": {
-          "card_type": "spell",
-          "zone": "graveyard",
-          "last_turn_by": "self"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "return_to_hand",
+    "filter": {
+      "card_type": "spell",
+      "zone": "graveyard",
+      "last_turn_by": "self"
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Return all spells you played last turn to your hand."
   },
   "CORE_TSC_217": {
@@ -4036,19 +3773,15 @@
     "races": [
       "NAGA"
     ],
-    "mechanics": [],
     "effects": [
       {
-        "type": "modify_cost",
-        "mode": "reduce",
-        "amount": 1,
-        "target": [
-          "leftmost_card_in_hand",
-          "rightmost_card_in_hand"
-        ],
-        "trigger": "outcast"
-      }
-    ],
+  "type": "modify_cost",
+  "mode": "reduce",
+  "amount": 1,
+  "target": ["leftmost_card_in_hand", "rightmost_card_in_hand"],
+  "trigger": "outcast"
+}
+],
     "text": "[x]<b>Outcast:</b> Reduce the Cost\nof the left and right-most\n cards in your hand by (1)."
   },
   "CORE_TSC_827": {
@@ -4067,15 +3800,14 @@
     "races": [
       "NAGA"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 1,
-        "duration": "until_next_turn",
-        "trigger": "on_spell_cast"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": 1,
+    "duration": "until_next_turn",
+    "trigger": "on_spell_cast"
+  }
+],
     "text": "[x]After you cast a spell,\ngain +1 Attack until\nyour next turn."
   },
   "CORE_ULD_177": {
@@ -4094,13 +3826,12 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
       {
-        "type": "draw",
-        "amount": 8,
-        "trigger": "deathrattle"
-      }
+    "type": "draw",
+    "amount": 8,
+    "trigger": "deathrattle"
+  }
     ],
     "text": "<b>Deathrattle:</b> Draw 8 cards."
   },
@@ -4120,27 +3851,18 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
       {
-        "type": "choose",
-        "options": [
-          {
-            "type": "rush"
-          },
-          {
-            "type": "taunt"
-          },
-          {
-            "type": "divine_shield"
-          },
-          {
-            "type": "windfury"
-          }
-        ],
-        "amount": 2,
-        "trigger": "battlecry"
-      }
+    "type": "choose",
+    "options": [
+      {"type": "rush"},
+      {"type": "taunt"},
+      {"type": "divine_shield"},
+      {"type": "windfury"}
+    ],
+    "amount": 2,
+    "trigger": "battlecry"
+  }
     ],
     "text": "[x]<b>Battlecry:</b> Gain 2 of <b>Rush</b>,\n<b>Taunt</b>, <b>Divine Shield</b>, or\n<b>Windfury</b> <i>(your choice).</i>"
   },
@@ -4158,15 +3880,14 @@
     "attack": 1,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "health": 2,
-        "target": "friendly_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "health": 2,
+    "target": "friendly_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give a friendly minion +2 Health."
   },
   "CORE_ULD_209": {
@@ -4183,17 +3904,14 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
       {
-        "type": "discover_mystery",
-        "amount": 1,
-        "filter": {
-          "card_type": "spell"
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  "type": "discover_mystery",
+  "amount": 1,
+  "filter": { "card_type": "spell" },
+  "trigger": "battlecry"
+}
+],
     "text": "<b>Battlecry</b>: <b>Discover</b> a spell or pick a mystery choice."
   },
   "CORE_ULD_271": {
@@ -4210,17 +3928,17 @@
     "attack": 2,
     "health": 6,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "self",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "taunt"
+  },
+  {
+    "type": "damage",
+    "amount": 3,
+    "target": "self",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Taunt</b>\n<b>Battlecry:</b> Deal 3 damage to this minion."
   },
   "CORE_ULD_723": {
@@ -4240,10 +3958,9 @@
       "UNDEAD",
       "MURLOC"
     ],
-    "mechanics": [
-      "Reborn"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "reborn" }
+],
     "text": "<b>Reborn</b>"
   },
   "Core_UNG_072": {
@@ -4260,20 +3977,18 @@
     "attack": 1,
     "health": 5,
     "races": [],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "card_type": "minion",
-          "has_taunt": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": {
+      "card_type": "minion",
+      "has_taunt": true
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Taunt</b>\n<b>Battlecry:</b> <b>Discover</b> a <b>Taunt</b> minion."
   },
   "CORE_UNG_084": {
@@ -4293,15 +4008,9 @@
       "ELEMENTAL",
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 3,
-        "target": "any_character",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "damage", "amount": 3, "target": "any", "trigger": "battlecry" }
+],
     "text": "<b>Battlecry:</b> Deal 3 damage."
   },
   "CORE_UNG_205": {
@@ -4320,14 +4029,9 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "freeze",
-        "target": "enemy_character",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "freeze", "target": "enemy_character", "trigger": "battlecry" }
+],
     "text": "<b>Battlecry:</b> <b>Freeze</b> an enemy."
   },
   "CORE_UNG_800": {
@@ -4344,14 +4048,13 @@
     "attack": 2,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "trigger_deathrattle",
-        "target": "friendly_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "trigger_deathrattle",
+    "target": "friendly_minion",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Trigger a friendly minion's <b>Deathrattle</b>."
   },
   "CORE_UNG_809": {
@@ -4370,37 +4073,33 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "card_id": "UNG_809t1",
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "card_id": "UNG_809t1",
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry</b>: Add a 1/2 Elemental to your hand."
   },
   "UNG_809t1": {
-    "card_id": "UNG_809t1",
-    "card_name": "Flame Elemental",
-    "card_class": "NEUTRAL",
-    "card_type": "MINION",
-    "cost": 1,
-    "set": "UNGORO",
-    "rarity": null,
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 1,
-    "health": 2,
-    "races": [
-      "ELEMENTAL"
-    ],
-    "mechanics": [],
-    "effects": [],
-    "text": null
-  },
+  "card_id": "UNG_809t1",
+  "card_name": "Flame Elemental",
+  "card_class": "NEUTRAL",
+  "card_type": "MINION",
+  "cost": 1,
+  "set": "UNGORO",
+  "rarity": null,
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 1,
+  "health": 2,
+  "races": ["ELEMENTAL"],
+  "effect": [],
+  "raw_text": ""
+},
   "CORE_UNG_848": {
     "card_id": "CORE_UNG_848",
     "card_name": "Primordial Drake",
@@ -4417,17 +4116,10 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 2,
-        "target": "all_other_minion",
-        "trigger": "battlecry"
-      }
-    ],
+  { "type": "taunt" },
+  { "type": "damage", "amount": 2, "target": "all_other_minion", "trigger": "battlecry" }
+],
     "text": "[x]<b>Taunt</b>\n<b>Battlecry:</b> Deal 2 damage\nto all other minions."
   },
   "CORE_UNG_912": {
@@ -4446,19 +4138,14 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "add_card_to_hand",
-        "amount": 1,
-        "filter": {
-          "card_type": "minion",
-          "race": "beast",
-          "random": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "add_card_to_hand",
+    "amount": 1,
+    "filter": { "card_type": "minion", "race": "beast", "random": true },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Add a random Beast to your hand."
   },
   "CORE_UNG_928": {
@@ -4477,17 +4164,16 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 2,
-        "duration": "while_opponent_turn",
-        "target": "self"
-      }
-    ],
+      {"type": "taunt" },
+  {
+  "type": "buff",
+  "attack": 2,
+  "duration": "while_opponent_turn",
+  "target": "self"
+}
+
+],
     "text": "<b>Taunt</b>\nHas +2 Attack during your opponent's turn."
   },
   "CORE_WC_042": {
@@ -4506,19 +4192,16 @@
     "races": [
       "ELEMENTAL"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "trigger": "after_play",
-        "condition": {
-          "card_race": "ELEMENTAL"
-        },
-        "target": "self",
-        "attack": 1,
-        "duration": "permanent"
-      }
-    ],
+  {
+    "type": "buff",
+    "trigger": "after_play",
+    "condition": { "card_race": "ELEMENTAL" },
+    "target": "self",
+    "attack": 1,
+    "duration": "permanent"
+  }
+],
     "text": "[x]After you play an Elemental,\ngain +1 Attack."
   },
   "CORE_WC_701": {
@@ -4537,15 +4220,14 @@
     "races": [
       "BEAST"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 1,
-        "target": "all_enemy_minion",
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 1,
+    "target": "all_enemy_minion",
+    "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b>Rush</b>\n<b>Deathrattle:</b> Deal 1 damage\nto all enemy minions."
   },
   "CORE_WON_065": {
@@ -4565,15 +4247,14 @@
       "DRAGON",
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "trigger": "after_summon",
-        "target": "summoned_minion",
-        "health": 1
-      }
-    ],
+  {
+    "type": "buff",
+    "trigger": "after_summon",
+    "target": "summoned_minion",
+    "health": 1
+  }
+],
     "text": "After you summon a minion, give it +1 Health."
   },
   "CORE_WON_096": {
@@ -4592,17 +4273,14 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "discover",
-        "amount": 1,
-        "filter": {
-          "cost": 1
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "discover",
+    "amount": 1,
+    "filter": { "cost": 1 },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry: Discover</b> a\n1-Cost card."
   },
   "CORE_WON_141": {
@@ -4619,19 +4297,18 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "trigger": "battlecry",
-        "target": "friendly_minion",
-        "random": true,
-        "amount": 3,
-        "unique_races": true,
-        "attack": 1,
-        "health": 1
-      }
-    ],
+  {
+    "type": "buff",
+    "trigger": "battlecry",
+    "target": "friendly_minion",
+    "random": true,
+    "amount": 3,
+    "unique_races": true,
+    "attack": 1,
+    "health": 1
+  }
+],
     "text": "[x]<b>Battlecry:</b> Give 3 random\nfriendly minions of different\nminion types +1/+1."
   },
   "CORE_WON_142": {
@@ -4648,19 +4325,18 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "trigger": "battlecry",
-        "target": "friendly_minion",
-        "random": true,
-        "amount": 3,
-        "unique_races": true,
-        "attack": 2,
-        "health": 2
-      }
-    ],
+  {
+    "type": "buff",
+    "trigger": "battlecry",
+    "target": "friendly_minion",
+    "random": true,
+    "amount": 3,
+    "unique_races": true,
+    "attack": 2,
+    "health": 2
+  }
+],
     "text": "[x]<b>Battlecry:</b> Give 3 random\nfriendly minions of different\nminion types +2/+2."
   },
   "CORE_YOD_026": {
@@ -4679,16 +4355,15 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "transfer_attack",
-        "trigger": "deathrattle",
-        "target": "friendly_minion",
-        "random": true,
-        "amount": "self_attack"
-      }
-    ],
+  {
+    "type": "transfer_attack",
+    "trigger": "deathrattle",
+    "target": "friendly_minion",
+    "random": true,
+    "amount": "self_attack"
+  }
+],
     "text": "[x]<b>Deathrattle:</b> Give this\nminion's Attack to a random\nfriendly minion."
   },
   "CORE_YOP_034": {
@@ -4707,16 +4382,15 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "trigger": "end_of_turn",
-        "target": "enemy_minion",
-        "random": true,
-        "amount": 10
-      }
-    ],
+  {
+    "type": "damage",
+    "trigger": "end_of_turn",
+    "target": "enemy_minion",
+    "random": true,
+    "amount": 10
+  }
+],
     "text": "[x]At the end of your turn,\ndeal 10 damage to a\nrandom enemy minion."
   },
   "CS3_007": {
@@ -4733,17 +4407,16 @@
     "attack": 3,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "spellpower",
-        "amount": 1
-      },
-      {
-        "type": "overload",
-        "amount": 1
-      }
-    ],
+  {
+    "type": "spellpower",
+    "amount": 1
+  },
+  {
+    "type": "overload",
+    "amount": 1
+  }
+],
     "text": "<b>Spell Damage +1</b> <b>Overload:</b> (1)"
   },
   "CS3_017": {
@@ -4762,16 +4435,15 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "trigger": "outcast",
-        "target": "friendly_hero",
-        "attack": 3,
-        "duration": "this_turn"
-      }
-    ],
+  {
+    "type": "buff",
+    "trigger": "outcast",
+    "target": "friendly_hero",
+    "attack": 3,
+    "duration": "this_turn"
+  }
+],
     "text": "<b>Outcast:</b> Give your hero +3 Attack this turn."
   },
   "CS3_020": {
@@ -4790,15 +4462,10 @@
     "races": [
       "DEMON"
     ],
-    "mechanics": [
-      "Rush"
-    ],
     "effects": [
-      {
-        "type": "follow_up_attack",
-        "trigger": "after_hero_attack"
-      }
-    ],
+      { "type": "rush" },
+      { "type": "follow_up_attack", "trigger": "after_hero_attack" }
+  ],
     "text": "<b>Rush</b>. After your hero attacks an enemy, this attacks it too."
   },
   "CS3_022": {
@@ -4817,17 +4484,16 @@
     "races": [
       "PIRATE"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 2,
-        "condition": {
-          "weapon_equipped": true
-        },
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "damage",
+    "amount": 2,
+    "condition": {
+      "weapon_equipped": true
+    },
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> If you have a weapon equipped, deal 2 damage."
   },
   "CS3_024": {
@@ -4844,19 +4510,15 @@
     "attack": 3,
     "health": 3,
     "races": [],
-    "mechanics": [
-      "Divine Shield",
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "draw",
-        "filter": {
-          "draw_highest_cost": "minion"
-        },
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "taunt" },
+  { "type": "divine_shield" },
+  {
+  "type": "draw",
+  "filter": { "draw_highest_cost": "minion" },
+  "trigger": "deathrattle"
+  }
+],
     "text": "[x]<b><b>Taunt</b>, Divine Shield</b>\n<b>Deathrattle:</b> Draw your\nhighest Cost minion."
   },
   "CS3_025": {
@@ -4873,21 +4535,17 @@
     "attack": 3,
     "health": 6,
     "races": [],
-    "mechanics": [
-      "Rush"
-    ],
     "effects": [
-      {
-        "type": "buff",
-        "target": {
-          "zone": "hand",
-          "card_type": "minion"
-        },
-        "attack": 1,
-        "health": 1,
-        "trigger": "after_self_attack"
-      }
-    ],
+  { "type": "rush" },
+  {
+    "type": "buff",
+    "target": { "zone": "hand", "card_type": "minion" },
+    "attack": 1,
+    "health": 1,
+    "trigger": "after_self_attack"
+  }
+],
+
     "text": "[x]<b>Rush</b>. Whenever this\nattacks, give +1/+1 to all\nminions in your hand."
   },
   "CS3_035": {
@@ -4906,8 +4564,7 @@
     "races": [
       "DRAGON"
     ],
-    "mechanics": [],
-    "effects": [],
+    "effects": null,
     "text": "[x]<b>Start of Game:</b> If this is in\nBOTH players' decks, turns\n are only 15 seconds long."
   },
   "CS3_038": {
@@ -4926,10 +4583,9 @@
     "races": [
       "MURLOC"
     ],
-    "mechanics": [
-      "Rush"
-    ],
-    "effects": [],
+    "effects": [
+  { "type": "rush" }
+],
     "text": "<b>Rush</b>"
   },
   "RLK_061": {
@@ -4950,50 +4606,45 @@
     "attack": 2,
     "health": 2,
     "races": [],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "spend_corpse",
-        "amount": 1,
-        "condition": {
-          "required": true
-        },
-        "trigger": "end_of_turn"
-      },
-      {
-        "type": "summon",
-        "card_id": "RLK_061t",
-        "amount": 1
-      }
-    ],
+  {
+    "type": "spend_corpse",
+    "amount": 1,
+    "condition": { "required": true },
+    "trigger": "end_of_turn"
+  },
+  {
+    "type": "summon",
+    "card_id": "RLK_061t",
+    "amount": 1
+  }
+],
     "text": "[x]At the end of your turn,\nraise a <b>Corpse</b> as a 1/3\n  Risen Footman with <b>Taunt</b>.  "
   },
-  "RLK_061t": {
-    "card_id": "RLK_061t",
-    "card_name": "Risen Footman",
-    "card_class": "DEATHKNIGHT",
-    "card_type": "MINION",
-    "cost": 1,
-    "set": "CORE",
-    "rarity": "TOKEN",
-    "collectible": false,
-    "spell_school": null,
-    "rune_cost": null,
-    "attack": 1,
-    "health": 3,
-    "races": [
-      "UNDEAD"
-    ],
-    "mechanics": [
-      "Taunt"
-    ],
-    "effects": [
-      {
-        "type": "no_corpse"
-      }
-    ],
-    "text": "<b>Taunt</b>"
-  },
+ "RLK_061t": {
+  "card_id": "RLK_061t",
+  "card_name": "Risen Footman",
+  "card_class": "DEATHKNIGHT",
+  "card_type": "MINION",
+  "cost": 1,
+  "set": "CORE",
+  "rarity": "TOKEN",
+  "collectible": false,
+  "spell_school": null,
+  "rune_cost": null,
+  "attack": 1,
+  "health": 3,
+  "races": ["UNDEAD"],
+  "effects": [
+    {
+      "type": "taunt"
+    },
+    {
+      "type": "no_corpse"
+    }
+  ],
+  "text": "<b>Taunt</b>"
+},
   "RLK_082": {
     "card_id": "RLK_082",
     "card_name": "Deathbringer Saurfang",
@@ -5014,19 +4665,15 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "return_to_hand",
-        "trigger": "deathrattle",
-        "target": "self",
-        "modify_cost": {
-          "mode": "health_instead_of_mana"
-        }
-      }
-    ],
+  { "type": "taunt" },
+  {
+    "type": "return_to_hand",
+    "trigger": "deathrattle",
+    "target": "self",
+    "modify_cost": { "mode": "health_instead_of_mana" }
+  }
+],
     "text": "[x]<b>Taunt</b>\n<b>Deathrattle:</b> Return this to\nyour hand. It costs Health\ninstead of Mana."
   },
   "RLK_223": {
@@ -5049,25 +4696,23 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Reborn"
-    ],
     "effects": [
-      {
-        "type": "damage",
-        "amount": 2,
-        "target": "enemy_character",
-        "random": true,
-        "trigger": "battlecry"
-      },
-      {
-        "type": "damage",
-        "amount": 2,
-        "target": "random_enemy",
-        "random": true,
-        "trigger": "deathrattle"
-      }
-    ],
+  { "type": "reborn" },
+  {
+    "type": "damage",
+    "amount": 2,
+    "target": "enemy_character",
+    "random": true,
+    "trigger": "battlecry"
+  },
+  {
+    "type": "damage",
+    "amount": 2,
+    "target": "random_enemy",
+    "random": true,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Reborn</b>\n<b>Battlecry and Deathrattle:</b> Deal 2 damage to a random enemy."
   },
   "RLK_503": {
@@ -5086,14 +4731,13 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "gain_corpse",
-        "amount": 1,
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "gain_corpse",
+    "amount": 1,
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry</b>: Gain a <b>Corpse</b>."
   },
   "RLK_511": {
@@ -5116,17 +4760,14 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "trigger": "deathrattle",
-        "filter": {
-          "spellschool": "frost"
-        },
-        "amount": 1
-      }
-    ],
+  {
+    "type": "draw",
+    "trigger": "deathrattle",
+    "filter": {"spellschool": "frost" },
+    "amount": 1
+  }
+],
     "text": "<b>Deathrattle:</b> Draw a\nFrost spell."
   },
   "RLK_708": {
@@ -5146,19 +4787,18 @@
       "UNDEAD",
       "DRAENEI"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "battlecry"
-      },
-      {
-        "type": "draw",
-        "amount": 1,
-        "trigger": "deathrattle"
-      }
-    ],
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "battlecry"
+  },
+  {
+    "type": "draw",
+    "amount": 1,
+    "trigger": "deathrattle"
+  }
+],
     "text": "<b>Battlecry and Deathrattle:</b> Draw a card."
   },
   "RLK_720": {
@@ -5177,17 +4817,15 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [
-      "Lifesteal",
-      "Taunt"
-    ],
     "effects": [
-      {
-        "type": "attack_enemy",
-        "target": "lowest_health_enemy",
-        "trigger": "end_of_turn"
-      }
-    ],
+  { "type": "taunt" },
+  { "type": "lifesteal" },
+  {
+    "type": "attack_enemy",
+    "target": "lowest_health_enemy",
+    "trigger": "end_of_turn"
+  }
+],
     "text": "[x]<b>Taunt</b>, <b>Lifesteal</b>\nAt the end of your turn,\nattack the lowest Health\nenemy."
   },
   "RLK_744": {
@@ -5210,15 +4848,14 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "modify_cost",
-        "mode": "reduce",
-        "value": "corpses_spent_this_game",
-        "target": "self"
-      }
-    ],
+  {
+    "type": "modify_cost",
+    "mode": "reduce",
+    "value": "corpses_spent_this_game",
+    "target": "self"
+  }
+],
     "text": "[x]Costs (1) less for each\n<b>Corpse</b> you've spent\nthis game."
   },
   "RLK_958": {
@@ -5237,18 +4874,15 @@
     "races": [
       "UNDEAD"
     ],
-    "mechanics": [],
     "effects": [
-      {
-        "type": "buff",
-        "attack": 2,
-        "target": "friendly_minion",
-        "races": [
-          "UNDEAD"
-        ],
-        "trigger": "battlecry"
-      }
-    ],
+  {
+    "type": "buff",
+    "attack": 2,
+    "target": "friendly_minion",
+    "races": ["UNDEAD"],
+    "trigger": "battlecry"
+  }
+],
     "text": "<b>Battlecry:</b> Give a friendly Undead +2 Attack."
   }
 }
