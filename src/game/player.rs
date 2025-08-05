@@ -119,13 +119,21 @@ impl Player {
     }
 
     pub fn heal(&mut self, amount: i32) {
-        let old_health = self.stats.health;
-        self.stats.health = (self.stats.health + amount).min(self.stats.max_health);
-        println!(
-            "Le joueur {:?} est soigné de {} PV (PV avant : {}, après : {})",
-            self.id, amount, old_health, self.stats.health
-            );
+        if self.stats.health >= self.stats.max_health {
+            return;                      // ← stoppe tout de suite
         }
+
+        let before = self.stats.health;
+        self.stats.health = (self.stats.health + amount).min(self.stats.max_health);
+
+        println!(
+            "Le joueur {} est soigné de {} PV (PV avant : {}, après : {})",
+            self.id_string(),
+            amount,
+            before,
+            self.stats.health
+        );
+    }
 
     pub fn take_damage(&mut self, amount: i32) {
         let mut remaining = amount;

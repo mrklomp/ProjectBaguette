@@ -1,21 +1,21 @@
 use serde::Deserialize;
 use std::collections::HashMap;
+
 use crate::game::card::{Card, CardStatus};
 use crate::game::enums::{CardClass, CardType, Rarity, SpellSchool, Races};
 use crate::game::effects::Effect;
-use crate::game::triggers::{TriggerDef, Trigger};
+use crate::game::triggers::{Trigger, TriggerDef};
 use crate::game::keywords::Keywords;
-
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct CardTemplate {
     pub card_id: String,
     pub card_name: String,
-    pub card_class: CardClass,        
-    pub card_type: CardType,          
+    pub card_class: CardClass,
+    pub card_type: CardType,
     pub cost: Option<u8>,
     pub set: Option<String>,
-    pub rarity: Option<Rarity>,      
+    pub rarity: Option<Rarity>,
     pub collectible: Option<bool>,
     pub spell_school: Option<SpellSchool>,
     pub rune_cost: Option<HashMap<String, u8>>,
@@ -23,7 +23,7 @@ pub struct CardTemplate {
     pub health: Option<i32>,
     #[serde(default)]
     pub mechanics: Vec<String>,
-    pub races: Option<Vec<Races>>,    
+    pub races: Option<Vec<Races>>,
     pub effects: Option<Vec<EffectTemplate>>,
     pub text: Option<String>,
 }
@@ -48,35 +48,34 @@ pub fn load_card_templates(path: &str) -> Result<HashMap<String, CardTemplate>, 
     Ok(cards)
 }
 
+
+// ---------------------------------------------------------------------------
+//  Conversion CardTemplate → Card
+// ---------------------------------------------------------------------------
 impl CardTemplate {
     pub fn to_card(&self) -> Card {
-        let mut triggered_effects: HashMap<Trigger, Vec<Effect>> = HashMap::new();
-        
-        let effects: Vec<Effect> = self.effects.as_ref()
-            .map(|effs| effs.iter().map(Effect::from_template).collect())
+        // ① Convertit tous les EffectTemplate en Effect runtime
+        let effects: Vec<Effect> = self
+            .effects
+            .as_ref()
+            .map(|tpls| tpls.iter().map(Effect::from_template).collect())
             .unwrap_or_default();
 
-        if let Some(effs) = &self.effects {
-            for eff in effs {
-                let effect = Effect::from_template(eff);
-                if let Some(trigger) = &eff.trigger {
-                    triggered_effects.entry(trigger.clone()).or_default().push(effect);
-                }
-            }
-        }
-
-
+        // ② Construit la liste des TriggerDef associés
         let mut triggers: Vec<TriggerDef> = Vec::new();
-
         if let Some(effect_tpls) = &self.effects {
-            for tpl_eff in effect_tpls {
-                if let Some(trig_kind) = &tpl_eff.trigger {
-                    let eff = Effect::from_template(tpl_eff);
-                    triggers.push(TriggerDef { when: trig_kind.clone(), effect: eff });
+            for (tpl, eff) in effect_tpls.iter().zip(effects.iter()) {
+                if let Some(trig_kind) = &tpl.trigger {
+                    triggers.push(TriggerDef {
+                        when: trig_kind.clone(),
+                        effect: eff.clone(),
+                    });
                 }
             }
         }
 
+
+        // ④ Construit la carte finale
         Card {
             card_id: self.card_id.clone(),
             name: self.card_name.clone(),
@@ -88,7 +87,7 @@ impl CardTemplate {
             text: self.text.clone(),
             card_class: self.card_class.clone(),
             tags: HashMap::new(),
-            keywords: self.keywords(),
+            keywords: self.keywords(),     // <-- si tu as ajouté ce champ à Card
             status: CardStatus {
                 current_health: self.health,
                 attack_modifiers: 0,
@@ -102,8 +101,8 @@ impl CardTemplate {
             effects: effects.clone(),
             native_effects: effects,
             spell_school: self.spell_school.clone(),
-            races: self.races.clone(),
-            triggered_effects,
+            races: self.races.clone(),       
+            triggers,                      
         }
     }
 

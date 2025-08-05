@@ -2,7 +2,7 @@ mod data;
 mod game;
 mod logger;
 
-use crate::data::card_template::{load_card_templates, CardTemplate};
+use crate::data::card_template::{CardTemplate, load_card_templates};
 use crate::game::engine::play_turn::play_turn;
 use crate::game::player::Player;
 use crate::game::state::{GameState, PlayerId};

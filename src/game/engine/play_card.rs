@@ -4,6 +4,8 @@ use crate::game::targets::Target;
 use crate::game::effects::{Effect, apply_effect};
 use crate::game::engine::utils::{minion_stats_string, IdString};
 use crate::game::triggers::Trigger;
+use crate::game::event::GameEvent;
+use crate::game::engine::events::dispatch_events;
 
 
 pub fn play_card_at_index(
@@ -65,13 +67,14 @@ pub fn play_card_at_index(
                 );
 
 
-                // === Effets de battlecry (appliqués AVANT de placer sur le board)
-                if let Some(effects) = card.triggered_effects.get(&crate::game::triggers::Trigger::Battlecry) {
-                    for effect in effects {
-                        apply_effect(state, player_id, effect, chooser, card_templates);
-                    }
-                }
+                // Empile l’événement « serviteur joué »
+                state.event_queue.push_back(GameEvent::CardPlayed {
+                    card_id: card.card_id.clone(),
+                    owner: *player_id,
+                });
 
+                // Déclenche tous les triggers correspondants
+                dispatch_events(state);
 
                 // Place la carte sur le board APRÈS l'effet
                 let mut card = card;

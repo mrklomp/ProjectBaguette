@@ -1,426 +1,420 @@
-use crate::game::state::{GameState, PlayerId};
-use crate::game::card::Card;
-use crate::game::effects::{Effect, apply_effect};
-use crate::game::engine::utils::{minion_stats_string, IdString};
-use crate::game::triggers::Trigger;
 use std::collections::HashMap;
-use crate::data::card_template::CardTemplate;
-use crate::game::keywords::Keywords;
+use crate::game::player::Player;
 
+use crate::{
+    data::card_template::CardTemplate,
+    game::{
+        card::Card,
+        engine::{
+            choose::Chooser,
+            events::dispatch_events,
+            utils::{minion_stats_string, IdString},
+        },
+        event::GameEvent,
+        keywords::Keywords,
+        state::{GameState, PlayerId},
+    },
+};
 
-pub fn perform_attack_phase(state: &mut GameState, current_id: &PlayerId, opponent_id: &PlayerId,
-                            chooser: &dyn crate::game::engine::choose::Chooser,card_templates: &HashMap<String, CardTemplate>,) {
+// ===========================================================================
+// API publique
+// ===========================================================================
+pub fn perform_attack_phase(
+    state: &mut GameState,
+    current: &PlayerId,
+    opponent: &PlayerId,
+    _chooser: &dyn Chooser,
+    _templates: &HashMap<String, CardTemplate>,
+) {
+    // ─────────────────────────────── attaques des serviteurs
+    let mut guard = 0;
     loop {
-        let attacker_id_opt = {
-            let player = state.players.get(current_id).unwrap();
-            player.zones.board
-                .iter()
-                .find(|minion| {
-                    if minion.status.attacks_this_turn >= minion.max_attacks_per_turn() {
-                        false
-                    } else if minion.status.just_played {
-                        minion.has_kw(Keywords::CHARGE) || minion.has_kw(Keywords::RUSH)
-                    } else {
-                        true
-                    }
-                })
-                .map(|minion| minion.card_id.clone())
-        };
-
-        if let Some(attacker_id) = attacker_id_opt {
-            // Recherche de la cible
-            let defender_id_opt = {
-                let opponent = state.players.get(opponent_id).unwrap();
-                let taunt_minions: Vec<_> = opponent.zones.board
-                    .iter()
-                    .filter(|m| m.has_kw(Keywords::TAUNT) && !m.has_kw(Keywords::STEALTH))
-                    .collect();
-
-                if !taunt_minions.is_empty() {
-                    taunt_minions.first().map(|m| m.card_id.clone())
-                } else {
-                    let possible_targets: Vec<_> = opponent.zones.board
-                        .iter()
-                        .filter(|m| !m.has_kw(Keywords::STEALTH))
-                        .collect();
-                    if !possible_targets.is_empty() {
-                        possible_targets.first().map(|m| m.card_id.clone())
-                    } else {
-                        None
-                    }
-                }
-            };
-
-            // RUSH: skip le tour si pas de minion adverse
-            {
-                let player = state.players.get(current_id).unwrap();
-                if let Some(attacker) = player.zones.board.iter().find(|c| c.card_id == attacker_id) {
-                    let is_rush = attacker.has_kw(Keywords::RUSH);
-                    let is_charge = attacker.has_kw(Keywords::CHARGE);
-
-
-                    if defender_id_opt.is_none() && attacker.status.just_played && is_rush && !is_charge {
-                        // Incrémente attacks_this_turn quand on skip une attaque, pour éviter boucle infinie
-                        if let Some(attacker_mut) = state.players.get_mut(current_id)
-                            .and_then(|pl| pl.zones.board.iter_mut().find(|c| c.card_id == attacker_id))
-                        {
-                            attacker_mut.status.attacks_this_turn += 1;
-                            println!("[DEBUG] {} (Rush) n'a pas pu attaquer ce tour (attaques: {})", attacker_mut.name, attacker_mut.status.attacks_this_turn);
-                        }
-                        continue;
-                    }
-                }
-            }
-
-            if let Some(defender_id) = defender_id_opt {
-                // --- Attaque un minion adverse ---
-                let (attacker_dead, defender_dead, damage_by_attacker, damage_by_defender);
-                let attacker_has_lifesteal;
-                let defender_has_lifesteal;
-                {
-                    let (player, opponent) = {
-                        let player_ptr: *mut crate::game::player::Player = state.players.get_mut(current_id).unwrap() as *mut _;
-                        let opponent_ptr: *mut crate::game::player::Player = state.players.get_mut(opponent_id).unwrap() as *mut _;
-                        unsafe { (&mut *player_ptr, &mut *opponent_ptr) }
-                    };
-
-                    let maybe_attacker = player.zones.board.iter_mut()
-                        .find(|c| c.card_id == attacker_id);
-                    if maybe_attacker.is_none() { continue; }
-                    let attacker = maybe_attacker.unwrap();
-
-                    let maybe_defender = opponent.zones.board.iter_mut()
-                        .find(|c| c.card_id == defender_id);
-                    if maybe_defender.is_none() { continue; }
-                    let defender = maybe_defender.unwrap();
-
-                    println!(
-                        "{} attaque {}",
-                        minion_stats_string(&attacker),
-                        minion_stats_string(&defender)
-                    );
-
-
-                    attacker_has_lifesteal = attacker.has_kw(Keywords::LIFESTEAL);
-                    defender_has_lifesteal = defender.has_kw(Keywords::LIFESTEAL);
-
-
-                    (attacker_dead, defender_dead, damage_by_attacker, damage_by_defender)
-                        = perform_attack(attacker, defender);
-
-                    println!(
-                        "Résultat : {}, {}",
-                        minion_stats_string(&attacker),
-                        minion_stats_string(&defender)
-                    );
-
-                }
-                if attacker_has_lifesteal && damage_by_attacker > 0 {
-                    let player = state.players.get_mut(current_id).unwrap();
-                    player.heal(damage_by_attacker as i32);
-                }
-                if defender_has_lifesteal && damage_by_defender > 0 {
-                    let opponent_player = state.players.get_mut(opponent_id).unwrap();
-                    opponent_player.heal(damage_by_defender as i32);
-                }
-
-                if attacker_dead {
-                    // Reborn, avant tout
-                    let player = state.players.get_mut(current_id).unwrap();
-                    for minion in player.zones.board.iter_mut() {
-                        if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.has_kw(Keywords::REBORN)
-                        {
-                            println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.remove_kw(Keywords::REBORN);
-                            minion.status.current_health = Some(1);
-                        }
-                    }
-                    // Clone les effets à appliquer
-                    let effects_to_apply = {
-                        let player = state.players.get(current_id).unwrap();
-                        player.zones.board
-                            .iter()
-                            .find(|c| c.card_id == attacker_id)
-                            .and_then(|minion| minion.triggered_effects.get(&crate::game::triggers::Trigger::Deathrattle).cloned())
-                    };
-                    println!("{} est mort", attacker_id);
-
-                    if let Some(effects) = effects_to_apply {
-                        for effect in effects {
-                            apply_effect(state, current_id, &effect, chooser, card_templates);
-                        }
-                    }
-
-                    // Maintenant seulement tu fais le retain
-                    let player = state.players.get_mut(current_id).unwrap();
-                    player.zones.board.retain(|c| c.card_id != attacker_id || c.status.current_health.unwrap_or(0) > 0);
-                }
-
-                if defender_dead {
-                    let opponent = state.players.get_mut(opponent_id).unwrap();
-                    for minion in opponent.zones.board.iter_mut() {
-                        if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.has_kw(Keywords::REBORN)
-                        {
-                            println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.remove_kw(Keywords::REBORN);
-                            minion.status.current_health = Some(1);
-                        }
-                    }
-                    // Clone les effets à appliquer
-                    let effects_to_apply = {
-                        let opponent = state.players.get(opponent_id).unwrap();
-                        opponent.zones.board
-                            .iter()
-                            .find(|c| c.card_id == defender_id)
-                            .and_then(|minion| minion.triggered_effects.get(&crate::game::triggers::Trigger::Deathrattle).cloned())
-                    };
-                    println!("{} est mort", defender_id);
-
-                    if let Some(effects) = effects_to_apply {
-                        for effect in effects {
-                            apply_effect(state, current_id, &effect, chooser, card_templates);
-                        }
-                    }
-
-    // Maintenant seulement tu fais le retain
-    let opponent = state.players.get_mut(opponent_id).unwrap();
-    opponent.zones.board.retain(|c| c.card_id != defender_id || c.status.current_health.unwrap_or(0) > 0);
-}
-
-
-                // --- Incrémente le compteur d’attaques pour Windfury ---
-                let player = state.players.get_mut(current_id).unwrap();
-                if let Some(attacker) = player.zones.board.iter_mut().find(|c| c.card_id == attacker_id) {
-                    attacker.status.attacks_this_turn += 1;
-                    println!(
-                        "[DEBUG] {} a attaqué {} fois ce tour (max: {})",
-                        attacker.name,
-                        attacker.status.attacks_this_turn,
-                        attacker.max_attacks_per_turn()
-                    );
-                }
-            } else {
-                // --- Attaque le héros adverse ---
-                let (attacker_dead, hero_died);
-                let mut lifesteal_to_heal = 0;
-                {
-                    let (player, opponent) = {
-                        let player_ptr: *mut crate::game::player::Player = state.players.get_mut(current_id).unwrap() as *mut _;
-                        let opponent_ptr: *mut crate::game::player::Player = state.players.get_mut(opponent_id).unwrap() as *mut _;
-                        unsafe { (&mut *player_ptr, &mut *opponent_ptr) }
-                    };
-
-                    let attacker = match player.zones.board.iter_mut().find(|c| c.card_id == attacker_id) {
-                        Some(a) => a,
-                        None => continue,
-                    };
-
-                    let is_rush = attacker.has_kw(Keywords::RUSH);
-                    let is_charge = attacker.has_kw(Keywords::CHARGE);
-
-
-                    if is_rush && !is_charge {
-                        // Incrémente attacks_this_turn quand on skip une attaque, pour éviter boucle infinie
-                        let player = state.players.get_mut(current_id).unwrap();
-                        if let Some(attacker_mut) = player.zones.board.iter_mut().find(|c| c.card_id == attacker_id) {
-                            attacker_mut.status.attacks_this_turn += 1;
-                            println!("[DEBUG] {} (Rush) n'a pas pu attaquer le héros adverse (attaques: {})", attacker_mut.name, attacker_mut.status.attacks_this_turn);
-                        }
-                        continue;
-                    }
-
-                    let damage = attacker.effective_attack();
-                    let attacker_has_lifesteal = attacker.has_kw(Keywords::LIFESTEAL);
-                    attacker.status.has_attacked = true;
-
-                    println!(
-                        "{} [{}|{}] attaque le héros adverse [{} PV] pour {} dégâts",
-                        attacker.name,
-                        attacker.effective_attack(),
-                        attacker.effective_health(),
-                        opponent.stats.health,
-                        damage
-                    );
-
-
-                    opponent.take_damage(damage as i32);
-                    hero_died = opponent.is_dead();
-
-                    println!(
-                        "PV du héros adverse [{}] après l’attaque : {}",
-                        opponent_id.id_string(),
-                        opponent.stats.health
-                    );
-
-
-                    attacker.status.current_health = Some(attacker.effective_health());
-                    attacker_dead = attacker.status.current_health.unwrap_or(0) <= 0;
-
-                    if attacker_has_lifesteal {
-                        lifesteal_to_heal = damage;
-                    }
-                }
-                if lifesteal_to_heal > 0 {
-                    let player = state.players.get_mut(current_id).unwrap();
-                    player.heal(lifesteal_to_heal as i32);
-                }
-
-                if attacker_dead {
-                    let player = state.players.get_mut(current_id).unwrap();
-                    for minion in player.zones.board.iter_mut() {
-                        if minion.status.current_health.unwrap_or(0) <= 0
-                            && minion.has_kw(Keywords::REBORN)
-                        {
-                            println!("{} revient en vie grâce à Reborn !", minion.name);
-                            minion.remove_kw(Keywords::REBORN);
-                            minion.status.current_health = Some(1);
-                        }
-                    }
-                    let player = state.players.get_mut(current_id).unwrap();
-                    println!("{} est mort", attacker_id);
-                    player.zones.board.retain(|c| c.card_id != attacker_id || c.status.current_health.unwrap_or(0) > 0);
-                }
-                if hero_died {
-                    println!("Le héros adverse est mort !");
-                }
-
-                // --- Incrémente le compteur d’attaques pour Windfury ---
-                let player = state.players.get_mut(current_id).unwrap();
-                if let Some(attacker) = player.zones.board.iter_mut().find(|c| c.card_id == attacker_id) {
-                    attacker.status.attacks_this_turn += 1;
-                    println!(
-                        "[DEBUG] {} a attaqué {} fois ce tour (max: {})",
-                        attacker.name,
-                        attacker.status.attacks_this_turn,
-                        attacker.max_attacks_per_turn()
-                    );
-                }
-            }
-        } else {
-            // Aucun minion ne peut plus attaquer
+        guard += 1;
+        if guard > 5000 {
+            println!("⚠️ guard ATTACK_PHASE stop après 50 itérations");
             break;
         }
-    }
 
-    // --- Phase d'attaque du héros avec arme (inchangée) ---
-    {
-        let (can_attack, weapon_attack, weapon_health) = {
-            let player = state.players.get(current_id).unwrap();
-            if let Some(weapon) = &player.stats.weapon {
-                if !player.hero_has_attacked {
-                    (true, weapon.attack.unwrap_or(0), weapon.health.unwrap_or(0))
-                } else {
-                    (false, 0, 0)
-                }
-            } else {
-                (false, 0, 0)
-            }
+        let attacker_id = match find_next_attacker(state, current) {
+            Some(id) => id,
+            None => break,
         };
 
-        if can_attack && weapon_attack > 0 && weapon_health > 0 {
-            let target_is_hero = {
-                let opponent = state.players.get(opponent_id).unwrap();
-                opponent.zones.board.is_empty()
-            };
+        let defender_id = choose_defender(state, opponent);
 
-            let (player, opponent) = {
-                let player_ptr: *mut crate::game::player::Player = state.players.get_mut(current_id).unwrap() as *mut _;
-                let opponent_ptr: *mut crate::game::player::Player = state.players.get_mut(opponent_id).unwrap() as *mut _;
-                unsafe { (&mut *player_ptr, &mut *opponent_ptr) }
-            };
+        // Skip Rush sans cible
+        if rush_cannot_attack(state, current, &attacker_id, defender_id.as_deref()) {
+            continue;
+        }
 
-            println!(
-                "{} attaque avec son héros ({} ATK) {}",
-                player.id_string(),
-                weapon_attack,
-                if target_is_hero { "le héros adverse" } else { "un serviteur adverse" }
-            );
+        match defender_id {
+            Some(def_id) => fight_minion(state, current, opponent, &attacker_id, &def_id),
+            None => attack_hero(state, current, opponent, &attacker_id),
+        }
+    }
 
-            if target_is_hero {
-                opponent.take_damage(weapon_attack as i32);
+    // ─────────────────────────────── arme du héros
+    hero_weapon_attack(state, current, opponent);
+}
+
+// ===========================================================================
+// Sélection attaquant / défenseur
+// ===========================================================================
+fn find_next_attacker(state: &GameState, pid: &PlayerId) -> Option<String> {
+    state.players[pid]
+        .zones
+        .board
+        .iter()
+        .find(|m| {
+            if m.status.attacks_this_turn >= m.max_attacks_per_turn() {
+                false
+            } else if m.status.just_played {
+                m.has_kw(Keywords::CHARGE) || m.has_kw(Keywords::RUSH)
             } else {
-                let defender = &mut opponent.zones.board[0];
-                defender.status.current_health = Some(defender.effective_health() - weapon_attack);
-                player.take_damage(defender.effective_attack() as i32);
-
-                println!(
-                    "Le héros subit {} en retour (riposte du serviteur)",
-                    defender.effective_attack()
-                );
-
-                if defender.status.current_health.unwrap_or(0) <= 0 {
-                    println!("{} tue le serviteur adverse : {}", player.id_string(), defender.name);
-                    opponent.zones.board.remove(0);
-                }
+                true
             }
+        })
+        .map(|m| m.card_id.clone())
+}
 
-            if let Some(weapon) = &mut player.stats.weapon {
-                weapon.health = weapon.health.map(|d| d.saturating_sub(1));
-                println!("Durabilité de l'arme : {}", weapon.health.unwrap_or(0));
-                if weapon.health == Some(0) {
-                    println!("L’arme {} est détruite !", weapon.name);
-                    let weapon_card = player.stats.weapon.take().unwrap();
-                    player.zones.graveyard.push(weapon_card);
-                }
-            }
+fn choose_defender(state: &GameState, opp_id: &PlayerId) -> Option<String> {
+    let opp_board = &state.players[opp_id].zones.board;
 
-            player.hero_has_attacked = true;
+    if let Some(t) = opp_board
+        .iter()
+        .find(|m| m.has_kw(Keywords::TAUNT) && !m.has_kw(Keywords::STEALTH))
+    {
+        return Some(t.card_id.clone());
+    }
+
+    opp_board
+        .iter()
+        .find(|m| !m.has_kw(Keywords::STEALTH))
+        .map(|m| m.card_id.clone())
+}
+
+fn rush_cannot_attack(
+    state: &mut GameState,
+    pid: &PlayerId,
+    attacker_id: &str,
+    defender_opt: Option<&str>,
+) -> bool {
+    let attacker = state.players[pid]
+        .zones
+        .board
+        .iter()
+        .find(|m| m.card_id == attacker_id)
+        .unwrap();
+
+    if attacker.has_kw(Keywords::RUSH)
+        && !attacker.has_kw(Keywords::CHARGE)
+        && attacker.status.just_played
+        && defender_opt.is_none()
+    {
+        state.players.get_mut(pid).unwrap().zones.board
+            .iter_mut()
+            .find(|m| m.card_id == attacker_id)
+            .unwrap()
+            .status
+            .attacks_this_turn += 1;
+        true
+    } else {
+        false
+    }
+}
+
+// ===========================================================================
+// Combat serviteur ↔ serviteur
+// ===========================================================================
+/// combat entre deux serviteurs déjà identifiés
+fn fight_minion(
+    state: &mut GameState,
+    current: &PlayerId,
+    opponent: &PlayerId,
+    attacker_id: &str,
+    defender_id: &str,
+) {
+    // ── indices sur les boards (pas d’emprunt mutable ici)
+    let att_idx = index_of(state, current, attacker_id);
+    let def_idx = index_of(state, opponent, defender_id);
+
+    // ── log
+    println!(
+        "{} attaque {}",
+        minion_stats_string(&state.players[current].zones.board[att_idx]),
+        minion_stats_string(&state.players[opponent].zones.board[def_idx])
+    );
+
+    // ── bloc mutable simultané (unsafe contrôlé)
+    let (att_dead, def_dead, dmg_att, dmg_def, att_ls, def_ls) = {
+        let current_ptr  = state.players.get_mut(current).unwrap()  as *mut Player;
+        let opponent_ptr = state.players.get_mut(opponent).unwrap() as *mut Player;
+        let (cur_mut, opp_mut) = unsafe { (&mut *current_ptr, &mut *opponent_ptr) };
+
+        let attacker = &mut cur_mut.zones.board[att_idx];
+        let defender = &mut opp_mut.zones.board[def_idx];
+
+        // Capture des flags Lifesteal AVANT le combat
+        let att_ls_local = attacker.has_kw(Keywords::LIFESTEAL);
+        let def_ls_local = defender.has_kw(Keywords::LIFESTEAL);
+
+        // Combat
+        let (a_dead, d_dead, dmg_to_def, dmg_to_att) = perform_attack(attacker, defender);
+
+        // Compter l'attaque tant qu'on a encore &mut attacker
+        attacker.status.attacks_this_turn += 1;
+
+        (a_dead, d_dead, dmg_to_def, dmg_to_att, att_ls_local, def_ls_local)
+    };
+
+    // Lifesteal (héros) uniquement si présent et si dégâts > 0
+    if att_ls && dmg_att > 0 {
+        state.players.get_mut(current).unwrap().heal(dmg_att);
+    }
+    if def_ls && dmg_def > 0 {
+        state.players.get_mut(opponent).unwrap().heal(dmg_def);
+    }
+
+    // Morts / Reborn / Deathrattles via file d’événements
+    handle_dead(
+        state,
+        current,
+        opponent,
+        att_dead.then_some(attacker_id.to_string()),
+        def_dead.then_some(defender_id.to_string()),
+    );
+
+}
+
+// ===========================================================================
+// Combat serviteur ↦ héros
+// ===========================================================================
+fn attack_hero(
+    state: &mut GameState,
+    current: &PlayerId,
+    opponent: &PlayerId,
+    attacker_id: &str,
+) {
+    let att_idx = index_of(state, current, attacker_id);
+
+    // On fait tout ce qui modifie l'attaquant + le héros adverse
+    let (dmg, attacker_dead, att_ls) = {
+        let current_ptr = state.players.get_mut(current).unwrap() as *mut Player;
+        let opponent_ptr = state.players.get_mut(opponent).unwrap() as *mut Player;
+        let (cur_mut, opp_mut) = unsafe { (&mut *current_ptr, &mut *opponent_ptr) };
+
+        let attacker = &mut cur_mut.zones.board[att_idx];
+
+        // Rush sans Charge : pas d'attaque héros
+        if attacker.status.just_played
+            && attacker.has_kw(Keywords::RUSH)
+            && !attacker.has_kw(Keywords::CHARGE)
+        {
+            attacker.status.attacks_this_turn += 1;
+            return;
+        }
+
+        let att_ls = attacker.has_kw(Keywords::LIFESTEAL);
+        let dmg = attacker.effective_attack();
+
+        opp_mut.take_damage(dmg as i32);
+
+        // maj PV de l'attaquant (éventuelle riposte future non applicable ici)
+        attacker.status.current_health = Some(attacker.effective_health());
+
+        // très important : compter l'attaque pendant qu'on a encore &mut attacker
+        attacker.status.attacks_this_turn += 1;
+
+        (dmg, attacker.status.current_health.unwrap_or(0) <= 0, att_ls)
+    };
+
+    println!(
+        "{} [{}|{}] attaque le héros adverse ({:?}) pour {}",
+        state.players[current].zones.board[att_idx].name,
+        state.players[current].zones.board[att_idx].effective_attack(),
+        state.players[current].zones.board[att_idx].effective_health(),
+        opponent,
+        dmg
+    );
+
+    // Lifesteal uniquement si présent
+    if att_ls && dmg > 0 {
+        state.players.get_mut(current).unwrap().heal(dmg);
+    }
+
+    // Mort potentielle de l'attaquant
+    handle_dead(
+        state,
+        current,
+        opponent,
+        attacker_dead.then_some(attacker_id.to_string()),
+        None,
+    );
+}
+
+
+// ===========================================================================
+// Héros + arme
+// ===========================================================================
+fn hero_weapon_attack(state: &mut GameState, current: &PlayerId, opponent: &PlayerId) {
+    // infos de base (aucun emprunt mutable)
+    let (can_attack, w_atk, w_dur, target_is_hero) = {
+        let p = &state.players[current];
+        let can = matches!(&p.stats.weapon, Some(w) if !p.hero_has_attacked);
+        let atk = p.stats.weapon.as_ref().map(|w| w.attack.unwrap_or(0)).unwrap_or(0);
+        let dur = p.stats.weapon.as_ref().map(|w| w.health.unwrap_or(0)).unwrap_or(0);
+        let hero = state.players[opponent].zones.board.is_empty();
+        (can, atk, dur, hero)
+    };
+    if !can_attack || w_atk == 0 || w_dur == 0 {
+        return;
+    }
+
+    // ── bloc 1 : dégâts infligés ---------------------------------------
+let retaliation = {
+    let current_ptr = state.players.get_mut(current).unwrap() as *mut Player;
+    let opponent_ptr = state.players.get_mut(opponent).unwrap() as *mut Player;
+    let (cur_mut, opp_mut) = unsafe { (&mut *current_ptr, &mut *opponent_ptr) };
+
+    if target_is_hero {
+        opp_mut.take_damage(w_atk as i32);
+        0
+    } else {
+        // appliquer les dégâts de l'arme au serviteur
+        let def = &mut opp_mut.zones.board[0];
+        def.status.current_health = Some(def.effective_health() - w_atk);
+
+        // riposte calculée AVANT suppression
+        let retaliation = def.effective_attack();
+
+        // retirer si mort
+        if def.status.current_health.unwrap_or(0) <= 0 {
+            opp_mut.zones.board.remove(0);
+        }
+
+        retaliation
+    }
+};
+
+    // ── bloc 2 : riposte + durabilité ---------------------------------
+    if retaliation > 0 {
+        state.players.get_mut(current).unwrap().take_damage(retaliation as i32);
+    }
+
+    let player = state.players.get_mut(current).unwrap();
+    if let Some(w) = &mut player.stats.weapon {
+        w.health = w.health.map(|d| d.saturating_sub(1));
+        if w.health == Some(0) {
+            player.zones.graveyard.push(player.stats.weapon.take().unwrap());
+        }
+    }
+    player.hero_has_attacked = true;
+}
+
+// ===========================================================================
+// Gestion des morts
+// ===========================================================================
+fn handle_dead(
+    state: &mut GameState,
+    current: &PlayerId,
+    opponent: &PlayerId,
+    attacker_dead: Option<String>,
+    defender_dead: Option<String>,
+) {
+    // ─── Attaquant mort ────────────────────────────────────────────────
+    if let Some(id) = attacker_dead {
+        reborn_pass(state, current);                       // Reborn d’abord
+        // 1. retire du board
+        state.players
+            .get_mut(current)
+            .unwrap()
+            .zones
+            .board
+            .retain(|m| m.card_id != id);
+        // 2. pousse l’évènement une fois que la carte n’existe plus
+        state.event_queue.push_back(GameEvent::MinionDied {
+            card_id: id,
+            owner: *current,
+        });
+    }
+
+    // ─── Défenseur mort ────────────────────────────────────────────────
+    if let Some(id) = defender_dead {
+        reborn_pass(state, opponent);
+        state.players
+            .get_mut(opponent)
+            .unwrap()
+            .zones
+            .board
+            .retain(|m| m.card_id != id);
+        state.event_queue.push_back(GameEvent::MinionDied {
+            card_id: id,
+            owner: *opponent,
+        });
+    }
+
+    // dispatch une fois la file remplie
+    dispatch_events(state);
+}
+
+fn reborn_pass(state: &mut GameState, pid: &PlayerId) {
+    for m in &mut state.players.get_mut(pid).unwrap().zones.board {
+        if m.status.current_health.unwrap_or(0) <= 0 && m.has_kw(Keywords::REBORN) {
+            println!("{} revient en vie grâce à Reborn !", m.name);
+            m.remove_kw(Keywords::REBORN);
+            m.status.current_health = Some(1);
         }
     }
 }
 
-// Effectue l'échange de coups entre deux minions, retourne :
-// (attaquant est mort, défenseur est mort, dégâts infligés par l'attaquant, dégâts infligés par le défenseur)
+
+// ===========================================================================
+// Combat élémentaire
+// ===========================================================================
 pub fn perform_attack(attacker: &mut Card, defender: &mut Card) -> (bool, bool, i32, i32) {
-    let attacker_attack = attacker.effective_attack();
-    let defender_attack = defender.effective_attack();
+    let att_atk = attacker.effective_attack();
+    let def_atk = defender.effective_attack();
 
-    let defender_pv_avant = defender.effective_health();
-    let attacker_pv_avant = attacker.effective_health();
-
-    // --- Divine Shield DEFENSEUR ---
-    let mut actual_damage_to_defender = attacker_attack;
-    if defender.has_kw(Keywords::DIVINE_SHIELD) && attacker_attack > 0 {
+    // Divine Shield
+    let mut dmg_def = att_atk;
+    if defender.has_kw(Keywords::DIVINE_SHIELD) && att_atk > 0 {
         defender.remove_kw(Keywords::DIVINE_SHIELD);
-        actual_damage_to_defender = 0;
+        dmg_def = 0;
     }
-
-    // --- Divine Shield ATTAQUANT (riposte) ---
-    let mut actual_damage_to_attacker = defender_attack;
-    if attacker.has_kw(Keywords::DIVINE_SHIELD) && defender_attack > 0 {
+    let mut dmg_att = def_atk;
+    if attacker.has_kw(Keywords::DIVINE_SHIELD) && def_atk > 0 {
         attacker.remove_kw(Keywords::DIVINE_SHIELD);
-        actual_damage_to_attacker = 0;
+        dmg_att = 0;
     }
 
-    // --- Applique les dégâts restants (si pas de Divine Shield) ---
-    attacker.status.current_health = Some(attacker.effective_health() - actual_damage_to_attacker);
-    defender.status.current_health = Some(defender.effective_health() - actual_damage_to_defender);
+    attacker.status.current_health = Some(attacker.effective_health() - dmg_att);
+    defender.status.current_health = Some(defender.effective_health() - dmg_def);
 
-    // --- POISONOUS ---
-    let attacker_has_poison = attacker.has_kw(Keywords::POISONOUS);
-    let defender_has_poison = defender.has_kw(Keywords::POISONOUS);
-
-
-    if attacker_has_poison && actual_damage_to_defender > 0 && !defender.has_kw(Keywords::DIVINE_SHIELD) {
+    // Poisonous
+    if attacker.has_kw(Keywords::POISONOUS) && dmg_def > 0 && !defender.has_kw(Keywords::DIVINE_SHIELD) {
         defender.status.current_health = Some(0);
-        println!("{} tue instantanément {} grâce à Poisonous !", attacker.name, defender.name);
     }
-
-    if defender_has_poison && actual_damage_to_attacker > 0 && !attacker.has_kw(Keywords::DIVINE_SHIELD) {
+    if defender.has_kw(Keywords::POISONOUS) && dmg_att > 0 && !attacker.has_kw(Keywords::DIVINE_SHIELD) {
         attacker.status.current_health = Some(0);
-        println!("{} tue instantanément {} en riposte grâce à Poisonous !", defender.name, attacker.name);
     }
 
     attacker.status.has_attacked = true;
     attacker.remove_kw(Keywords::STEALTH);
 
-    let attacker_dead = attacker.status.current_health.unwrap_or(0) <= 0;
-    let defender_dead = defender.status.current_health.unwrap_or(0) <= 0;
+    let att_dead = attacker.status.current_health.unwrap_or(0) <= 0;
+    let def_dead = defender.status.current_health.unwrap_or(0) <= 0;
 
-    let damage_by_attacker = defender_pv_avant.min(actual_damage_to_defender).max(0);
-    let damage_by_defender = attacker_pv_avant.min(actual_damage_to_attacker).max(0);
+    (att_dead, def_dead, dmg_def.max(0), dmg_att.max(0))
+}
 
-    (attacker_dead, defender_dead, damage_by_attacker, damage_by_defender)
+// ===========================================================================
+// Utilitaire d’index
+// ===========================================================================
+fn index_of(state: &GameState, pid: &PlayerId, card_id: &str) -> usize {
+    state.players[pid]
+        .zones
+        .board
+        .iter()
+        .position(|m| m.card_id == card_id)
+        .expect("card should exist on board")
 }
