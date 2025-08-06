@@ -3,7 +3,6 @@ use crate::game::event::GameEvent;
 use crate::game::effects::Effect;
 use crate::game::state::PlayerId;
 
-
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Trigger {
@@ -27,33 +26,45 @@ pub enum Trigger {
     WhenDrawn,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TriggerDef {
     pub when: Trigger,
-    pub effect: Effect,
+    pub effect: crate::game::effects::Effect,
 }
 
 impl TriggerDef {
-    pub fn matches(&self, event: &GameEvent, owner: PlayerId, card_id: &str) -> bool {
+    /// `owner_id` = contrôleur du permanent qui porte le trigger
+    /// `self_card_id` = id de la carte qui porte le trigger
+    pub fn matches(
+        &self,
+        event: &crate::game::event::GameEvent,
+        owner_id: crate::game::state::PlayerId,
+        self_card_id: &str,
+    ) -> bool {
+        use crate::game::event::GameEvent::*;
+        use Trigger::*;
+
         match (&self.when, event) {
-            (Trigger::Battlecry,
-             GameEvent::CardPlayed { card_id: played_id, owner: ev_owner }) =>
-                 ev_owner == &owner && played_id == card_id,
+            // Battlecry : on ne déclenche que si l’événement concerne CETTE carte
+            (Battlecry, CardPlayed { card_id, owner }) => {
+                *owner == owner_id && card_id == self_card_id
+            }
 
-            (Trigger::Deathrattle,
-             GameEvent::MinionDied { card_id: dead_id, owner: ev_owner }) =>
-                 ev_owner == &owner && dead_id == card_id,
+            // Deathrattle : on ne déclenche que si CETTE carte vient de mourir
+            (Deathrattle, MinionDied { card_id, owner }) => {
+                *owner == owner_id && card_id == self_card_id
+            }
 
-            (Trigger::StartOfTurn,
-             GameEvent::TurnStart { player }) =>
-                 player == &owner,
+            // Début/fin de tour du contrôleur
+            (StartOfTurn, TurnStart { player }) => *player == owner_id,
+            (EndOfTurn,   TurnEnd   { player }) => *player == owner_id,
 
-            (Trigger::EndOfTurn,
-             GameEvent::TurnEnd { player }) =>
-                 player == &owner,
+            // Début/fin de tour adverse
+            (StartOfEnemyTurn, TurnStart { player }) => *player == owner_id.opponent(),
+            (EndOfEnemyTurn,   TurnEnd   { player }) => *player == owner_id.opponent(),
 
+            // Par défaut : pas de match
             _ => false,
         }
     }
 }
-

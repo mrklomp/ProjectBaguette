@@ -1,41 +1,55 @@
 use crate::game::{
     event::GameEvent,
-    state::GameState,
-    triggers::TriggerDef,
+    state::{GameState, PlayerId},
 };
-use crate::game::state::PlayerId;
-use crate::game::effects::{Effect,apply_effect};
-use std::collections::HashMap;
 use crate::game::engine::choose::RandomChooser;
+use crate::game::effects::{apply_effect, Effect};
+use std::collections::HashMap;
 
-/// Vide la file d’événements et déclenche les triggers correspondants.
 pub fn dispatch_events(state: &mut GameState) {
-    let mut guard = 0;                       // ← hors du while (une seule fois)
-
     let mut chooser = RandomChooser;
-    let card_templates = HashMap::new();
+    let card_templates: HashMap<String, crate::data::card_template::CardTemplate> = HashMap::new();
+
+    // Limiteur d'événements uniquement en debug (pas en release)
+    #[cfg(debug_assertions)]
+    const MAX_EVENTS_DEBUG: usize = 50;
+    #[cfg(debug_assertions)]
+    let mut guard = 0usize;
 
     while let Some(event) = state.event_queue.pop_front() {
-        guard += 1;
-        println!("event #{guard}: {:?}", event);   // ordre d’arrivée
-
-        if guard > 20 {                           // ← 20 suffit
-            println!("⚠️ guard dispatch_events STOP (20 événements)");
-            break;
+        #[cfg(debug_assertions)]
+        {
+            guard += 1;
+            println!("event #{}: {:?}", guard, event);
+            if guard > MAX_EVENTS_DEBUG {
+                println!("⚠️ guard dispatch_events STOP ({MAX_EVENTS_DEBUG} événements)");
+                break;
+            }
+            // Affiche les triggers de la carte jouée — utile en debug
+            if let GameEvent::CardPlayed { ref card_id, .. } = event {
+                for (&pid, pl) in &state.players {
+                    for c in &pl.zones.board {
+                        if c.card_id == *card_id {
+                            println!(
+                                "DBG: on-board {} (owner={:?}) has {} trigger(s): {:?}",
+                                c.name,
+                                pid,
+                                c.triggers.len(),
+                                c.triggers.iter().map(|t| &t.when).collect::<Vec<_>>()
+                            );
+                        }
+                    }
+                }
+            }
         }
-    }
 
-
-    while let Some(event) = state.event_queue.pop_front() {
-        println!("🔔 Event : {:?}", event);
-
-        // 1) On collecte d’abord tout ce qui doit se déclencher
+        // 1) Collecte (emprunts immuables uniquement)
         let mut pending: Vec<(PlayerId, Effect)> = Vec::new();
-
-        for (&owner_id, player) in &mut state.players {
-            for card in &player.zones.board {        // <- emprunt immuable seulement
+        for (&owner_id, player) in &state.players {
+            for card in &player.zones.board {
                 for trig in &card.triggers {
                     if trig.matches(&event, owner_id, &card.card_id) {
+                        #[cfg(debug_assertions)]
                         println!("➡️  Trigger {:?} sur {}", trig.when, card.name);
                         pending.push((owner_id, trig.effect.clone()));
                     }
@@ -43,16 +57,9 @@ pub fn dispatch_events(state: &mut GameState) {
             }
         }
 
-        // 2) L’emprunt sur state.players est libéré ici (fin du for)
-        //    On peut maintenant emprunter `&mut state` pour apply_effect.
+        // 2) Application (emprunt mutable ensuite)
         for (owner_id, eff) in pending {
-            apply_effect(
-                state,
-                &owner_id,
-                &eff,
-                &mut chooser,
-                &card_templates,
-            );
+            apply_effect(state, &owner_id, &eff, &mut chooser, &card_templates);
         }
     }
 }

@@ -66,23 +66,32 @@ pub fn play_card_at_index(
                     minion_stats_string(&card)
                 );
 
+                // 1) On place D’ABORD le serviteur sur le board
+                //    (pour que dispatch_events voie ses triggers)
+                let played_id: String;
+                {
+                    let mut played = card;              // carte retirée de la main
+                    played.status.just_played = true;
+                    played_id = played.card_id.clone();
 
-                // Empile l’événement « serviteur joué »
+                    let player = state.players.get_mut(player_id).unwrap();
+                    player.zones.board.push(played);
+
+                    // Petit debug: combien de triggers sur cette carte ?
+                    let trig_count = player.zones.board.last().map(|c| c.triggers.len()).unwrap_or(0);
+                    println!("·· played {} with {} trigger(s)", played_id, trig_count);
+                } // <-- fin d’emprunt de `player`, on peut ré-emprunter `state` ensuite
+
+                // 2) On pousse l’événement "CardPlayed" puis on le traite
                 state.event_queue.push_back(GameEvent::CardPlayed {
-                    card_id: card.card_id.clone(),
+                    card_id: played_id,
                     owner: *player_id,
                 });
-
-                // Déclenche tous les triggers correspondants
                 dispatch_events(state);
 
-                // Place la carte sur le board APRÈS l'effet
-                let mut card = card;
-                card.status.just_played = true;
-                let player = state.players.get_mut(player_id).unwrap();
-                player.zones.board.push(card);
                 true
             }
+
             _ => {
                 let player = state.players.get_mut(player_id).unwrap();
                 println!(

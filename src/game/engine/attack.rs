@@ -162,8 +162,8 @@ fn fight_minion(
         let (a_dead, d_dead, dmg_to_def, dmg_to_att) = perform_attack(attacker, defender);
 
         // Compter l'attaque tant qu'on a encore &mut attacker
-        attacker.status.attacks_this_turn += 1;
-
+        attacker.status.attacks_this_turn = attacker.status.attacks_this_turn.saturating_add(1);
+        println!("[ATK] {} -> attacks_this_turn={}", attacker.name, attacker.status.attacks_this_turn);
         (a_dead, d_dead, dmg_to_def, dmg_to_att, att_ls_local, def_ls_local)
     };
 
@@ -197,20 +197,22 @@ fn attack_hero(
 ) {
     let att_idx = index_of(state, current, attacker_id);
 
-    // On fait tout ce qui modifie l'attaquant + le héros adverse
+    // Modifications sur l'attaquant + dégâts au héros adverse
     let (dmg, attacker_dead, att_ls) = {
-        let current_ptr = state.players.get_mut(current).unwrap() as *mut Player;
+        use crate::game::player::Player;
+        let current_ptr  = state.players.get_mut(current).unwrap()  as *mut Player;
         let opponent_ptr = state.players.get_mut(opponent).unwrap() as *mut Player;
         let (cur_mut, opp_mut) = unsafe { (&mut *current_ptr, &mut *opponent_ptr) };
 
         let attacker = &mut cur_mut.zones.board[att_idx];
 
-        // Rush sans Charge : pas d'attaque héros
+        // Rush sans Charge : pas d'attaque héros le tour où il arrive
         if attacker.status.just_played
             && attacker.has_kw(Keywords::RUSH)
             && !attacker.has_kw(Keywords::CHARGE)
         {
-            attacker.status.attacks_this_turn += 1;
+            attacker.status.attacks_this_turn =
+                attacker.status.attacks_this_turn.saturating_add(1);
             return;
         }
 
@@ -219,11 +221,13 @@ fn attack_hero(
 
         opp_mut.take_damage(dmg as i32);
 
-        // maj PV de l'attaquant (éventuelle riposte future non applicable ici)
-        attacker.status.current_health = Some(attacker.effective_health());
+        // Marquer l'attaque et maj de l'état de l'attaquant
+        attacker.status.has_attacked = true;
+        attacker.status.attacks_this_turn =
+            attacker.status.attacks_this_turn.saturating_add(1);
 
-        // très important : compter l'attaque pendant qu'on a encore &mut attacker
-        attacker.status.attacks_this_turn += 1;
+        // (pas de riposte quand on tape le héros)
+        attacker.status.current_health = Some(attacker.effective_health());
 
         (dmg, attacker.status.current_health.unwrap_or(0) <= 0, att_ls)
     };
@@ -237,12 +241,12 @@ fn attack_hero(
         dmg
     );
 
-    // Lifesteal uniquement si présent
+    // Lifesteal (soigne le héros du contrôleur de l’attaquant)
     if att_ls && dmg > 0 {
         state.players.get_mut(current).unwrap().heal(dmg);
     }
 
-    // Mort potentielle de l'attaquant
+    // Nettoyage / deathrattles via file d’événements
     handle_dead(
         state,
         current,

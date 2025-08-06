@@ -1,14 +1,14 @@
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::collections::HashMap;
-
+use crate::game::triggers::Trigger;
 use crate::game::engine::utils::{ChooseRandomMut, IdString};
 use crate::data::card_template::{EffectTemplate,CardTemplate};
 use crate::game::state::{GameState, PlayerId};
 use crate::game::targets::Target;
 use crate::game::engine::draw::{draw_n, draw_n_with_filter};
-use crate::game::enums::{CardType, Rarity};
-
-
+use crate::game::enums::{CardType, Rarity, Races};
+use crate::game::card::Card;
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "snake_case")]
@@ -35,15 +35,15 @@ pub enum Effect {
         filter: Option<HashMap<String, serde_json::Value>>,
         trigger: Option<String>,
     },
-
     Buff {
         attack: Option<i32>,
         health: Option<i32>,
+        amount: Option<i32>,
+        random: Option<bool>,
         duration: Option<String>,
-        target: Option<serde_json::Value>,
-        filter: Option<HashMap<String, serde_json::Value>>,
-        condition: Option<HashMap<String, serde_json::Value>>,
-        trigger: Option<String>,
+        filter: Option<Value>,
+        target: Option<Target>,
+        trigger: Option<Trigger>,
     },
     Summon {
         amount: Option<i32>,
@@ -165,15 +165,30 @@ impl Effect {
                 trigger: None,
             },
             "banish_temporarily" => Effect::Unknown,
-            "buff" => Effect::Buff {
-                attack: None,
-                health: None,
-                duration: None,
-                target: None,
-                filter: None,
-                condition: None,
-                trigger: None,
-            },
+            "buff" => {
+    let attack   = template.extra.get("attack").and_then(|v| v.as_i64()).map(|x| x as i32);
+    let health   = template.extra.get("health").and_then(|v| v.as_i64()).map(|x| x as i32);
+    let amount   = template.extra.get("amount").and_then(|v| v.as_i64()).map(|x| x as i32);
+    let random   = template.extra.get("random").and_then(|v| v.as_bool());
+    let duration = template.extra.get("duration").and_then(|v| v.as_str()).map(|s| s.to_string());
+    let filter   = template.extra.get("filter").cloned();
+    let target   = template
+        .extra
+        .get("target")
+        .and_then(|v| v.as_str())
+        .and_then(|s| crate::game::targets::Target::from_str(s));
+
+    Effect::Buff {
+        attack,
+        health,
+        amount,
+        random,
+        duration,
+        filter,
+        target,
+        trigger: template.trigger.clone(),
+    }
+}
             "choose" => Effect::Unknown,
             "copy_card_to_hand" => Effect::CopyCardToHand {
                 from: None,
@@ -302,6 +317,30 @@ pub fn remove_dead_minions(state: &mut GameState) {
     }
 }
 
+fn card_has_any_race(card: &crate::game::card::Card, races: &[Races]) -> bool {
+    match &card.races {
+        Some(card_races) => card_races.iter().any(|r| races.contains(r)),
+        None => false,
+    }
+}
+
+fn apply_buff_values(
+    card: &mut crate::game::card::Card,
+    add_atk: i32,
+    add_hp: i32,
+) {
+    if add_atk != 0 {
+        card.status.attack_modifiers += add_atk;
+    }
+    if add_hp != 0 {
+        // max_health et current_health sont Option<i32>; on les traite prudemment
+        let cur = card.status.current_health.unwrap_or(0);
+        let maxh = card.max_health.unwrap_or(card.health.unwrap_or(0));
+        card.max_health = Some(maxh + add_hp);
+        card.status.current_health = Some(cur + add_hp);
+    }
+}
+
 pub fn apply_effect(
     state: &mut GameState,
     player_id: &PlayerId,
@@ -309,6 +348,7 @@ pub fn apply_effect(
     chooser: &dyn crate::game::engine::choose::Chooser,
     card_templates: &HashMap<String, CardTemplate>,
 ) {
+    let owner_id = player_id;  // ou player_id, selon le vrai nom
     match effect {
         // ---- DAMAGE ----
         Effect::Damage { amount: Some(dmg), repeat, target: Some(target), .. } => {
@@ -594,6 +634,96 @@ pub fn apply_effect(
                 }
             }
         }
+
+        // ---- BUFF ----
+        Effect::Buff {
+    attack,
+    health,
+    amount,
+    random: _,
+    duration: _,
+    filter: _,
+    target,
+    trigger: _,
+} => {
+    // ΔATK et ΔPV (fallback simple : "amount" = bonus d'ATK si "attack" absent)
+    let add_atk = (*attack).or(*amount).unwrap_or(0);
+    let add_hp  = (*health).unwrap_or(0);
+
+    println!(
+        "[BUFF] owner={:?} target={:?} atk:+{} hp:+{} amount={:?}",
+        owner_id, target, add_atk, add_hp, amount
+    );
+
+    // petit helper local pour appliquer le buff à un serviteur
+    fn apply_buff_to(minion: &mut Card, add_atk: i32, add_hp: i32) {
+        if add_atk != 0 {
+            minion.status.attack_modifiers += add_atk;
+            let before = crate::game::engine::utils::minion_stats_string(minion);
+
+            // ATTAQUE
+            minion.status.attack_modifiers += add_atk;
+
+            // VIE (courante + max si présent)
+            if add_hp != 0 {
+                if let Some(h) = minion.status.current_health {
+                    minion.status.current_health = Some(h + add_hp);
+                }
+                if let Some(mh) = minion.max_health {
+                    minion.max_health = Some(mh + add_hp);
+                }
+            }
+
+            let after = crate::game::engine::utils::minion_stats_string(minion);
+            println!(
+                "[BUFF→APPLIED] {}  ==>  {}   ({}; +{}/+{})",
+                before, after, minion.name, add_atk, add_hp
+            );
+
+        }
+        if add_hp != 0 {
+            // met à jour max, base et PV courants de façon cohérente
+            let prev_max = minion.max_health.unwrap_or(minion.health.unwrap_or(0));
+            minion.max_health = Some(prev_max + add_hp);
+
+            let prev_base = minion.health.unwrap_or(prev_max);
+            minion.health = Some(prev_base + add_hp);
+
+            let prev_cur = minion.status.current_health.unwrap_or(prev_base);
+            minion.status.current_health = Some(prev_cur + add_hp);
+        }
+    }
+
+    match target {
+        // Tous les serviteurs alliés
+        Some(Target::AllFriendlyMinion) => {
+            let p = state.players.get_mut(owner_id).unwrap();
+            for m in &mut p.zones.board {
+                apply_buff_to(m, add_atk, add_hp);
+            }
+        }
+        // Tous les serviteurs (alliés + ennemis)
+        Some(Target::AllMinion) => {
+            for pid in [*owner_id, owner_id.opponent()] {
+                let p = state.players.get_mut(&pid).unwrap();
+                for m in &mut p.zones.board {
+                    apply_buff_to(m, add_atk, add_hp);
+                }
+            }
+        }
+        // Un serviteur allié (simplifié : on prend le premier)
+        Some(Target::FriendlyMinion) | Some(Target::SelfTarget) => {
+            let p = state.players.get_mut(owner_id).unwrap();
+            if let Some(m) = p.zones.board.first_mut() {
+                apply_buff_to(m, add_atk, add_hp);
+            }
+        }
+        // Par défaut : pas encore géré
+        other => {
+            println!("[BUFF] cible {:?} non gérée pour l’instant (ΔATK={}, ΔPV={})", other, add_atk, add_hp);
+        }
+    }
+}
 
         // ---- SUMMON ----
 

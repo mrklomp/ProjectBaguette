@@ -30,13 +30,16 @@ pub fn play_turn(
         .push_back(GameEvent::TurnStart { player: current_id });
     dispatch_events(state);
 
-    // ─── 2. Reset just_played / has_attacked des serviteurs ──────────────────
+    // ---- 1. Réinitialise just_played / has_attacked / attacks_this_turn ----
     if let Some(player) = state.players.get_mut(&current_id) {
-        for minion in &mut player.zones.board {
-            minion.status.just_played  = false;
-            minion.status.has_attacked = false;
+    for minion in player.zones.board.iter_mut() {
+        if minion.status.just_played {
+            minion.status.just_played = false;
         }
+        minion.status.has_attacked = false;
+        minion.status.attacks_this_turn = 0; // ← AJOUT
     }
+}
 
     // ─── 3. Pioche automatique ───────────────────────────────────────────────
     if let Some(player) = state.players.get_mut(&current_id) {
@@ -61,7 +64,7 @@ pub fn play_turn(
     for (id, label) in [(current_id, "Joueur Actif"), (opponent_id, "Adversaire")] {
         if let Some(player) = state.players.get(&id) {
             let noms: Vec<_> = player.zones.hand.iter().map(|c| c.name.as_str()).collect();
-            println!("{label} ({id:?}) : {} cartes en main {:?}", noms.len(), noms);
+            println!("{} ({id:?}) : {} cartes en main {:?}", label, noms.len(), noms);
         }
     }
 
